@@ -1,58 +1,109 @@
-﻿// Importa espacios de nombres necesarios (omitible si usas global using)
+﻿// Importa los paquetes necesarios
 using Dapper;
 using System.Data;
 using WebAPI.Models;
 using WebAPI.Data;
+using WebAPI.DTOs;
 
 namespace WebAPI.Services
 {
-    // Esta clase se encargará de acceder a la base de datos para todo lo relacionado con usuarios
+    /// <summary>
+    /// Servicio responsable de gestionar operaciones relacionadas con los usuarios en la base de datos.
+    /// Utiliza Dapper y procedimientos almacenados.
+    /// </summary>
     public class UserService
     {
-        // Campo privado para guardar la fábrica de conexiones
         private readonly DbConnectionFactory _connectionFactory;
 
-        // Constructor que recibe la fábrica por inyección de dependencias
+        /// <summary>
+        /// Constructor que recibe la fábrica de conexión por inyección de dependencias.
+        /// </summary>
         public UserService(DbConnectionFactory connectionFactory)
         {
             _connectionFactory = connectionFactory;
         }
 
-        // Método asincrónico que devuelve una lista de usuarios activos desde la base de datos
-        public async Task<IEnumerable<User>> GetAllUsersAsync()
+        /// <summary>
+        /// Obtiene todos los usuarios activos registrados en la base de datos.
+        /// </summary>
+        public async Task<SPResult<IEnumerable<User>>> GetAllUsersAsync()
         {
-            // Abre una conexión a la base de datos usando la clase personalizada
-            using IDbConnection conn = _connectionFactory.CreateConnection();
+            try
+            {
+                using IDbConnection conn = _connectionFactory.CreateConnection();
 
-            // Consulta SQL para obtener usuarios activos
-            string sql = "SELECT * FROM Users WHERE IsEnabled = 1";
+                string sql = "SELECT * FROM Users WHERE IsEnabled = 1";
 
-            // Ejecuta la consulta y mapea automáticamente los resultados a objetos User
-            return await conn.QueryAsync<User>(sql);
+                var users = await conn.QueryAsync<User>(sql);
+
+                return new SPResult<IEnumerable<User>>
+                {
+                    ResultCode = 0,
+                    ResultMessage = "Consulta exitosa.",
+                    Data = users
+                };
+            }
+            catch (Exception ex) 
+            {
+                return new SPResult<IEnumerable<User>>
+                {
+                    ResultCode = 99,
+                    ResultMessage = ex.Message,
+                    Data = Enumerable.Empty<User>() // o null si se cambia
+                };
+            }
         }
 
-        // Método asincrónico que devuelve una lista de usuarios activos desde la base de datos
-        public async Task<User?> GetUserByIdAsync(int userId)
+        /// <summary>
+        /// Obtiene un usuario específico por su ID.
+        /// </summary>
+        /// <param name="userId">Identificador del usuario</param>
+        public async Task<SPResult<User?>> GetUserByIdAsync(int userId)
         {
-            // Abre una conexión a la base de datos usando la clase personalizada
-            using IDbConnection conn = _connectionFactory.CreateConnection();
+            try
+            {
+                using IDbConnection conn = _connectionFactory.CreateConnection();
 
-            // Consulta SQL para obtener usuarios activos
-            string sql = "SELECT * FROM Users WHERE UserID = @UserID";
+                string sql = "SELECT * FROM Users WHERE UserID = @UserID AND IsEnabled = 1";
 
-            // Ejecuta la consulta y mapea automáticamente los resultados a objetos User
-            return await conn.QueryFirstOrDefaultAsync<User>(
-                sql,
-                new { UserID = userId } // Este es el parámetro que declaraste en la firma
-            );
+                var user = await conn.QueryFirstOrDefaultAsync<User>(sql, new { UserID = userId });
+
+                if (user == null)
+                {
+                    return new SPResult<User?>
+                    {
+                        ResultCode = 1,
+                        ResultMessage = "Usuario no encontrado.",
+                        Data = null
+                    };
+                }
+
+                return new SPResult<User?>
+                {
+                    ResultCode = 0,
+                    ResultMessage = "Consulta exitosa.",
+                    Data = user
+                };
+            }
+            catch (Exception ex)
+            {
+                return new SPResult<User?>
+                {
+                    ResultCode = 99,
+                    ResultMessage = $"Error inesperado: {ex.Message}",
+                    Data = null
+                };
+            }
         }
-        public async Task<(int ResultCode, string ResultMessage)> UpdateUserAsync(User user)
+
+        /// <summary>
+        /// Actualiza los datos de un usuario existente mediante SP_UpdateUser.
+        /// </summary>
+        /// <param name="user">Objeto usuario con la información actualizada</param>
+        public async Task<SPResult<object>> UpdateUserAsync(User user)
         {
-            // Abre una conexión a la base de datos usando una fábrica de conexiones (inyectada)
-            // Esto mejora la reutilización y facilita las pruebas unitarias
             using var conn = _connectionFactory.CreateConnection();
 
-            // Se preparan los parámetros que se enviarán al procedimiento almacenado
             var parameters = new DynamicParameters();
             parameters.Add("@UserID", user.UserID);
             parameters.Add("@FirstName", user.FirstName);
@@ -62,23 +113,26 @@ namespace WebAPI.Services
             parameters.Add("@RoleID", user.RoleID);
             parameters.Add("@AreaID", user.AreaID);
             parameters.Add("@ReportsTo", user.ReportsTo);
+            parameters.Add("@IsEnabled", user.IsEnabled);
 
-            // Se definen los parámetros de salida del SP
             parameters.Add("@ResultCode", dbType: DbType.Int32, direction: ParameterDirection.Output);
             parameters.Add("@ResultMessage", dbType: DbType.String, size: 200, direction: ParameterDirection.Output);
 
-            // Se ejecuta el procedimiento almacenado con los parámetros dados
             await conn.ExecuteAsync("SP_UpdateUser", parameters, commandType: CommandType.StoredProcedure);
 
-            // Se obtienen los valores de salida del SP
-            int resultCode = parameters.Get<int>("@ResultCode");
-            string resultMessage = parameters.Get<string>("@ResultMessage");
-
-            // Se devuelve el código y el mensaje de resultado
-            return (resultCode, resultMessage);
+            return new SPResult<object>
+            {
+                ResultCode = parameters.Get<int>("@ResultCode"),
+                ResultMessage = parameters.Get<string>("@ResultMessage"),
+                Data = null // No se devuelve un objeto específico
+            };
         }
 
-        public async Task<(int ResultCode, string ResultMessage, int? UserID)> CreateUserAsync(User user)
+        /// <summary>
+        /// Crea un nuevo usuario mediante SP_CreateUser y devuelve su ID si fue exitoso.
+        /// </summary>
+        /// <param name="user">Objeto usuario con los datos a registrar</param>
+        public async Task<SPResult<int?>> CreateUserAsync(User user)
         {
             using var conn = _connectionFactory.CreateConnection();
 
@@ -97,13 +151,12 @@ namespace WebAPI.Services
 
             await conn.ExecuteAsync("SP_CreateUser", parameters, commandType: CommandType.StoredProcedure);
 
-            int resultCode = parameters.Get<int>("@ResultCode");
-            string resultMessage = parameters.Get<string>("@ResultMessage");
-            int? userID = parameters.Get<int?>("@UserID");
-
-            return (resultCode, resultMessage, userID);
+            return new SPResult<int?>
+            {
+                ResultCode = parameters.Get<int>("@ResultCode"),
+                ResultMessage = parameters.Get<string>("@ResultMessage"),
+                Data = parameters.Get<int?>("@UserID")
+            };
         }
-
-
     }
 }

@@ -1,6 +1,8 @@
-﻿using Microsoft.AspNetCore.Mvc;       
-using WebAPI.Services;                
-using WebAPI.Models;
+﻿// Importa los paquetes necesarios
+using Microsoft.AspNetCore.Mvc;        // Para crear controladores y manejar solicitudes HTTP
+using WebAPI.Services;                // Para acceder al servicio de usuario (UserService)
+using WebAPI.Models;                  // Para usar el modelo de datos 'User'
+using WebAPI.DTOs;                    // Para usar SPResult<T>
 
 namespace WebAPI.Controllers
 {
@@ -20,19 +22,21 @@ namespace WebAPI.Controllers
         }
 
 
-        // Acción que responde a solicitudes HTTP GET en: api/Role
+        /// <summary>
+        /// Obtiene todos los roles del sistema.
+        /// </summary>
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Role>>> GetAllRoles()
         {
+            var result = await _roleService.GetAllRoleAsync();
 
-            var roles = await _roleService.GetAllRoleAsync();
+            if (result.ResultCode == 99)
+                return StatusCode(500, result.ResultMessage);
 
-            if (roles == null || !roles.Any())
-            {
+            if (result.Data == null || !result.Data.Any())
                 return NotFound("No se encontraron roles.");
-            }
 
-            return Ok(roles);
+            return Ok(result.Data);
         }
 
     }

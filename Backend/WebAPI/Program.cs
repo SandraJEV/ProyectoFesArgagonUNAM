@@ -15,6 +15,7 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 builder.Services.AddScoped<UserService>();
 builder.Services.AddScoped<RoleService>();
 builder.Services.AddScoped<AreaService>();
+builder.Services.AddScoped<FormRenderService>();
 
 
 builder.Services.AddControllers();

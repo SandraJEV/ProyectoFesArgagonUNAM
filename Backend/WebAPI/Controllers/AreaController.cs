@@ -1,14 +1,17 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using WebAPI.Services;
-using WebAPI.Models;
+﻿
+using Microsoft.AspNetCore.Mvc;
+using WebAPI.DTOs; // Asegúrate de tener SPResult<T>
+using WebAPI.Models; // Reemplaza por el modelo real: Entity
+using WebAPI.Services; // Reemplaza por el servicio real: EntityService
 
 namespace WebAPI.Controllers
 {
     [ApiController]
-    [Route("api/[Controller]")]
+    [Route("api/[controller]")]
     public class AreaController : ControllerBase
     {
         private readonly AreaService _areaService;
+
         public AreaController(AreaService areaService)
         {
             _areaService = areaService;
@@ -17,15 +20,31 @@ namespace WebAPI.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Area>>> GetAllAreas()
         {
-            var areas = await _areaService.GetAllAreaAsync();
-
-            if (areas == null)
+            try
             {
-                return NotFound("No se encontrón áreas para seleccionar");
+                var result = await _areaService.GetAllAreasAsync();
+
+                if (result.ResultCode == 99)
+                    return StatusCode(500, result.ResultMessage);
+
+                if (result.Data == null || !result.Data.Any())
+                    return NotFound("No se encontraron registros de tipo Area.");
+
+                return Ok(result.Data);
             }
-
-            return Ok(areas);
+            catch (Exception ex)
+            {
+                return StatusCode(500, new SPResult<object>
+                {
+                    ResultCode = 99,
+                    ResultMessage = "Error inesperado en GetAll: " + ex.Message,
+                    Data = null
+                });
+            }
         }
-    }
 
+        
+
+       
+    }
 }

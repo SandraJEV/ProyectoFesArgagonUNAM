@@ -2,32 +2,49 @@
 using System.Data;
 using WebAPI.Models;
 using WebAPI.Data;
-
+using WebAPI.DTOs; // Asegúrate de tener el DTO SPResult aquí
 
 namespace WebAPI.Services
 {
     public class RoleService
     {
-        // Campo privado para guardar la fábrica de conexiones
         private readonly DbConnectionFactory _connectionFactory;
 
-        // Constructor que recibe la fábrica por inyección de dependencias
         public RoleService(DbConnectionFactory connectionFactory)
         {
             _connectionFactory = connectionFactory;
         }
 
-        public async Task<IEnumerable<Role>> GetAllRoleAsync()
+        /// <summary>
+        /// Consulta todos los roles disponibles en la base de datos.
+        /// </summary>
+        /// <returns>Un objeto SPResult con la lista de roles o un mensaje de error.</returns>
+        public async Task<SPResult<IEnumerable<Role>>> GetAllRoleAsync()
         {
-            // Abre una conexión a la base de datos usando la clase personalizada
-            using IDbConnection conn = _connectionFactory.CreateConnection();
+            try
+            {
+                using IDbConnection conn = _connectionFactory.CreateConnection();
 
-            // Consulta SQL para obtener usuarios activos
-            string sql = "SELECT * FROM Roles";
+                string sql = "SELECT * FROM Roles";
 
-            // Ejecuta la consulta y mapea automáticamente los resultados a objetos Role
-            return await conn.QueryAsync<Role>(sql);
+                var roles = await conn.QueryAsync<Role>(sql);
+
+                return new SPResult<IEnumerable<Role>>
+                {
+                    ResultCode = 0,
+                    ResultMessage = "Consulta exitosa.",
+                    Data = roles
+                };
+            }
+            catch (Exception ex)
+            {
+                return new SPResult<IEnumerable<Role>>
+                {
+                    ResultCode = 99,
+                    ResultMessage = ex.Message,
+                    Data = Enumerable.Empty<Role>() // o null si se cambia
+                };
+            }
         }
-
     }
 }

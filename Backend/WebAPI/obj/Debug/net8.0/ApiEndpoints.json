@@ -20,6 +20,22 @@
     ]
   },
   {
+    "ContainingType": "WebAPI.Controllers.FormRenderController",
+    "Method": "GetFieldAndValidations",
+    "RelativePath": "api/FormRender/{formId}",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "formId",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
     "ContainingType": "WebAPI.Controllers.HealthController",
     "Method": "CheckDatabase",
     "RelativePath": "api/Health/check-database",
@@ -83,17 +99,7 @@
         "IsRequired": true
       }
     ],
-    "ReturnTypes": [
-      {
-        "Type": "System.Collections.Generic.IEnumerable\u00601[[WebAPI.Models.User, WebAPI, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
-        "MediaTypes": [
-          "text/plain",
-          "application/json",
-          "text/json"
-        ],
-        "StatusCode": 200
-      }
-    ]
+    "ReturnTypes": []
   },
   {
     "ContainingType": "WebAPI.Controllers.UserController",

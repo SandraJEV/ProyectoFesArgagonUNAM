@@ -1,8 +1,9 @@
-﻿// Importa espacios de nombres necesarios (omitible si usas global using)
+﻿
 using Dapper;
 using System.Data;
 using WebAPI.Models;
 using WebAPI.Data;
+using WebAPI.DTOs;
 
 namespace WebAPI.Services
 {
@@ -10,18 +11,39 @@ namespace WebAPI.Services
     {
         private readonly DbConnectionFactory _connectionFactory;
 
-        public AreaService(DbConnectionFactory connectionFactory) 
-        { 
+        public AreaService(DbConnectionFactory connectionFactory)
+        {
             _connectionFactory = connectionFactory;
         }
 
-        public async Task<IEnumerable<Area>> GetAllAreaAsync() 
+        // Consulta directa
+        public async Task<SPResult<IEnumerable<Area>>> GetAllAreasAsync()
         {
-            using IDbConnection conn = _connectionFactory.CreateConnection();
+            try
+            {
+                using IDbConnection conn = _connectionFactory.CreateConnection();
+                string sql = "SELECT * FROM Areas WHERE IsActive = 1";
+                var result = await conn.QueryAsync<Area>(sql);
 
-            string sql = "SELECT * FROM Areas WHERE IsActive = 1";
-
-            return await conn.QueryAsync<Area>(sql);
+                return new SPResult<IEnumerable<Area>>
+                {
+                    ResultCode = 0,
+                    ResultMessage = "Consulta exitosa.",
+                    Data = result
+                };
+            }
+            catch (Exception ex)
+            {
+                return new SPResult<IEnumerable<Area>>
+                {
+                    ResultCode = 99,
+                    ResultMessage = "Error en GetAllAreasAsync: " + ex.Message,
+                    Data = Enumerable.Empty<Area>()
+                };
+            }
         }
+
+        
+
     }
 }
