@@ -4,6 +4,7 @@ import { Label } from "../../components/ui/label";
 import { Button } from "../../components/ui/button"
 import { Select } from "../../components/ui/Select";
 import { FormMensajes } from "../../components/ui/FormMensajes"
+import { DynamicForm } from "../../components/ui/FormDinamico"
 import api from '../../services/api'
 import logo from "../../assets/images/UNAM-FES-Aragon.png"
 
@@ -71,94 +72,7 @@ function UserForm() {
           <h2 className="text-center text-2xl font-bold text-gray-900">
             Registrar Usuario
           </h2>
-          <form className="space-y-6">
-            <div>
-              <Label htmlFor="Name">Nombre(s)</Label>
-              <Input
-                id="Name"
-                name="Name"
-                type="text"
-                required
-                autoComplete="Name"
-                placeholder="Nombre"
-              />
-            </div>
-
-            <div>
-              <Label htmlFor="LastName">Apellidos</Label>
-              <Input
-                id="LastName"
-                name="LastName"
-                type="text"
-                required
-                autoComplete="LastName"
-                placeholder="Apellidos"
-              />
-            </div>
-
-            <div>
-              <Label htmlFor="Email">Email</Label>
-              <Input
-                id="Email"
-                name="Email"
-                type="email"
-                required
-                autoComplete="Email"
-                placeholder="Email"
-              />
-            </div>
-
-            <div>
-              <Label htmlFor="Rol">Rol</Label>
-              <Select id="Rol" options={roles} selected={selectedRole} onChange={setSelectedRole}></Select>
-            </div>
-
-            <div>
-              <Label htmlFor="Area">Área</Label>
-              <Select id="Area" options={areas} selected={selectedArea} onChange={setSelectedArea}></Select>
-            </div>
-
-            <div>
-              <Label htmlFor="password">Contraseña</Label>
-              <Input
-                id="password"
-                name="Contraseña"
-                type="password"
-                required
-                autoComplete="current-password"
-                placeholder="*********"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-              />
-              <FormMensajes />
-            </div>
-            <div>
-              <Label htmlFor="passwordAgain">Confirma tu contraseña</Label>
-              <Input
-                id="passwordAgain"
-                name="passwordAgain"
-                type="passwordAgain"
-                required
-                autoComplete="current-passwordAgain"
-                placeholder="*********"
-                value={passwordAgain}
-                onChange={(e) => setPasswordAgain(e.target.value)}
-              />
-              <FormMensajes
-                messages={
-                  password && passwordAgain && password !== passwordAgain
-                    ? ['Las contraseñas no coinciden.']
-                    : []
-                }
-              />
-            </div>
-
-            <div>
-              <Button type="submit">
-                Entrar
-              </Button>
-            </div>
-          </form>
+          <DynamicForm formId={2} onSubmit={(data) => console.log('Formulario listo:', data)} />
         </div>
       </div>
     </>
