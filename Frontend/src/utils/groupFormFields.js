@@ -13,7 +13,9 @@ export function groupFieldsById(data) {
         placeholder: item.placeholder,
         isRequired: item.isRequired,
         orderNumber: item.orderNumber,
+        options: item.options,
         validations: [],
+        
       }
     }
 

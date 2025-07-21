@@ -6,8 +6,16 @@ export function validateField(value, rules, formData = {}) {
 
     switch (rule.ruleType) {
       case "required":
-        if (!value?.trim()) errors.push(rule.message);
+        if (
+          value === null ||                                  // null o sin seleccionar
+          value === undefined ||
+          (typeof value === "string" && value.trim() === "") || // cadena vacía
+          (typeof value === "object" && !value.id)               // objeto sin id (select)
+        ) {
+          errors.push(rule.message)
+        }
         break;
+
       case "minLength":
         if (value.length < parseInt(val)) errors.push(rule.message);
         break;

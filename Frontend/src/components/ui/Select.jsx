@@ -5,8 +5,7 @@ import { ChevronUpDownIcon } from '@heroicons/react/16/solid'
 import { CheckIcon } from '@heroicons/react/20/solid'
 
 export function Select({ options = [], selected, onChange }) {
-  const [selectedOption, setSelectedOption] = useState(selected ?? null)
-
+  const [selectedOption, setSelectedOption] = useState(selected ?? null)  
   return (
     <Listbox
       value={selectedOption}

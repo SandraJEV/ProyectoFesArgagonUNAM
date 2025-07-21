@@ -4,60 +4,60 @@ import { Label } from "../../components/ui/label";
 import { Button } from "../../components/ui/button"
 import { Select } from "../../components/ui/Select";
 import { FormMensajes } from "../../components/ui/FormMensajes"
-import { DynamicForm } from "../../components/ui/FormDinamico"
+import DynamicForm from "../../components/ui/FormDinamico"
 import api from '../../services/api'
 import logo from "../../assets/images/UNAM-FES-Aragon.png"
 
 function UserForm() {
 
-  const [roles, setRoles] = useState([])
-  const [selectedRole, setSelectedRole] = useState(null)
+  // const [roles, setRoles] = useState([])
+  // const [selectedRole, setSelectedRole] = useState(null)
 
-  const [areas, setAreas] = useState([])
-  const [selectedArea, setSelectedArea] = useState(null)
+  // const [areas, setAreas] = useState([])
+  // const [selectedArea, setSelectedArea] = useState(null)
 
-  const [password, setPassword] = useState('');
-  const [passwordAgain, setPasswordAgain] = useState('');
+  // const [password, setPassword] = useState('');
+  // const [passwordAgain, setPasswordAgain] = useState('');
 
 
-  useEffect(() => {
-    const controller = new AbortController()
+  // useEffect(() => {
+  //   const controller = new AbortController()
 
-    api.get('/Area', { signal: controller.signal })
-      .then(res => {
-        setAreas(res.data)
-        console.log('Area ', res.data);
+  //   api.get('/Area', { signal: controller.signal })
+  //     .then(res => {
+  //       setAreas(res.data)
+  //       console.log('Area ', res.data);
 
-      })
-      .catch(error => {
-        if (error.name !== 'CanceledError') {
-          console.error("Error al cargar áreas:", error)
-        }
-      })
+  //     })
+  //     .catch(error => {
+  //       if (error.name !== 'CanceledError') {
+  //         console.error("Error al cargar áreas:", error)
+  //       }
+  //     })
 
-    return () => {
-      controller.abort()
-    }
-  }, [])
+  //   return () => {
+  //     controller.abort()
+  //   }
+  // }, [])
 
-  useEffect(() => {
-    const controller = new AbortController()
-    api.get('/Role', { signal: controller.signal })
-      .then(res => {
-        console.log('Roles:', res.data)
-        setRoles(res.data)
-        setSelectedRole(res.data[0])
-      })
-      .catch(error => {
-        if (error.name !== 'CanceledError') {
-          console.error("Error al cargar roles:", error)
-        }
-      })
+  // useEffect(() => {
+  //   const controller = new AbortController()
+  //   api.get('/Role', { signal: controller.signal })
+  //     .then(res => {
+  //       console.log('Roles:', res.data)
+  //       setRoles(res.data)
+  //       setSelectedRole(res.data[0])
+  //     })
+  //     .catch(error => {
+  //       if (error.name !== 'CanceledError') {
+  //         console.error("Error al cargar roles:", error)
+  //       }
+  //     })
 
-    return () => {
-      controller.abort()
-    }
-  }, [])
+  //   return () => {
+  //     controller.abort()
+  //   }
+  // }, [])
 
 
   return (

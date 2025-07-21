@@ -7,38 +7,58 @@ import { FormMensajes } from './FormMensajes'
 import api from '../../services/api'
 import { groupFieldsById } from '../../utils/groupFormFields'
 import { validateField } from '../../utils/formValidation'
+import { getCleanFormData } from '../../utils/formHelpers'
 
 function DynamicForm({ formId = 2, onSubmit }) {
-  // Estado para los campos agrupados y ordenados
-  const [formFields, setFormFields] = useState([])
+  const [formFields, setFormFields] = useState([])        // Campos del formulario
+  const [formData, setFormData] = useState({})            // Valores actuales del formulario
+  const [errors, setErrors] = useState({})                // Errores por campo
 
-  // Estado para valores del formulario
-  const [formData, setFormData] = useState({})
-
-  // Estado para mensajes de error por campo
-  const [errors, setErrors] = useState({})
-
+  // Obtener y preparar los campos del formulario desde la API
   useEffect(() => {
     api.get(`/FormRender/${formId}`)
       .then(res => {
         const grouped = groupFieldsById(res.data)
+
+        // Parsear las opciones de campos select si vienen como string
+        grouped.forEach(field => {
+          if (field.type === 'select' && typeof field.options === 'string') {
+            try {
+              const parsed = JSON.parse(field.options)
+
+              // Normaliza cada opción solo con id y name
+              field.options = parsed.map(opt => ({
+                id: opt.Id ?? opt.id,
+                name: opt.Name ?? opt.name
+              }))
+            } catch (err) {
+              console.warn(`Error al parsear options para ${field.fieldName}:`, err)
+              field.options = []
+            }
+          }
+
+        })
+
         setFormFields(grouped)
 
-        // Inicializar los valores del formulario en blanco
+        // Inicializar los valores del formulario
         const initialValues = {}
         grouped.forEach(f => {
-          initialValues[f.fieldName] = ''
+          // Para selects, iniciar como null (sin opción seleccionada)
+          initialValues[f.fieldName] = f.type === 'select' ? null : ''
         })
         setFormData(initialValues)
       })
       .catch(err => console.error('Error al cargar campos dinámicos', err))
   }, [formId])
 
-  // Manejador del submit del formulario
+  // Manejar el envío del formulario
   const handleSubmit = (e) => {
     e.preventDefault()
 
     const newErrors = {}
+
+    // Validar todos los campos
     formFields.forEach(field => {
       const value = formData[field.fieldName]
       const errs = validateField(value, field.validations, formData)
@@ -49,8 +69,10 @@ function DynamicForm({ formId = 2, onSubmit }) {
 
     setErrors(newErrors)
 
+    // Enviar si no hay errores
     if (Object.keys(newErrors).length === 0) {
-      onSubmit?.(formData) // Ejecutar función padre si no hay errores
+      const finalData = getCleanFormData(formData)
+      onSubmit?.(finalData)
     }
   }
 
@@ -60,33 +82,43 @@ function DynamicForm({ formId = 2, onSubmit }) {
         <div key={field.fieldId}>
           <Label htmlFor={field.fieldName}>{field.label}</Label>
 
-          <Input
-            id={field.fieldName}
-            name={field.fieldName}
-            type={field.type}
-            placeholder={field.placeholder}
-            required={field.isRequired}
-            value={formData[field.fieldName] || ''}
-            onChange={(e) => {
-              const value = e.target.value
-              const updatedData = { ...formData, [field.fieldName]: value }
-              setFormData(updatedData)
+          {field.type === 'select' ? (
+            <Select
+              options={field.options}
+              selected={formData[field.fieldName]}
+              onChange={(selectedOption) => {
+                const updatedData = { ...formData, [field.fieldName]: selectedOption }
+                setFormData(updatedData)
 
-              const validation = validateField(value, field.validations, updatedData)
-              setErrors({ ...errors, [field.fieldName]: validation })
-            }}
-          />
+                const validation = validateField(selectedOption, field.validations, updatedData)
+                setErrors({ ...errors, [field.fieldName]: validation })
+              }}
+            />
+          ) : (
+            <Input
+              id={field.fieldName}
+              name={field.fieldName}
+              type={field.type}
+              placeholder={field.placeholder}
+              required={field.isRequired}
+              value={formData[field.fieldName] || ''}
+              onChange={(e) => {
+                const value = e.target.value
+                const updatedData = { ...formData, [field.fieldName]: value }
+                setFormData(updatedData)
+
+                const validation = validateField(value, field.validations, updatedData)
+                setErrors({ ...errors, [field.fieldName]: validation })
+              }}
+            />
+          )}
 
           <FormMensajes messages={errors[field.fieldName] || []} />
         </div>
       ))}
 
       <div>
-        <Button
-          type="submit"
-        >
-          Registrar
-        </Button>
+        <Button type="submit">Registrar</Button>
       </div>
     </form>
   )
