@@ -13,12 +13,21 @@ function DynamicForm({ formId = 2, onSubmit }) {
   const [formFields, setFormFields] = useState([])        // Campos del formulario
   const [formData, setFormData] = useState({})            // Valores actuales del formulario
   const [errors, setErrors] = useState({})                // Errores por campo
+  const [formButtons, setFormButtons] = useState([]) // Botones del formulario
+
 
   // Obtener y preparar los campos del formulario desde la API
   useEffect(() => {
     api.get(`/FormRender/${formId}`)
       .then(res => {
-        const grouped = groupFieldsById(res.data)
+        const { fields, buttons } = res.data
+
+        const grouped = groupFieldsById(fields)
+        setFormFields(grouped)
+        setFormButtons(buttons)
+
+
+
 
         // Parsear las opciones de campos select si vienen como string
         grouped.forEach(field => {
@@ -40,6 +49,8 @@ function DynamicForm({ formId = 2, onSubmit }) {
         })
 
         setFormFields(grouped)
+        console.log('grouped', grouped);
+
 
         // Inicializar los valores del formulario
         const initialValues = {}
@@ -47,6 +58,9 @@ function DynamicForm({ formId = 2, onSubmit }) {
           // Para selects, iniciar como null (sin opción seleccionada)
           initialValues[f.fieldName] = f.type === 'select' ? null : ''
         })
+
+        console.log('VALORES INCIALES ', initialValues);
+
         setFormData(initialValues)
       })
       .catch(err => console.error('Error al cargar campos dinámicos', err))
@@ -129,9 +143,26 @@ function DynamicForm({ formId = 2, onSubmit }) {
         </div>
       ))}
 
-      <div>
-        <Button type="submit">Registrar</Button>
+      <div className="flex gap-4">
+        {formButtons.map(btn => (
+          <Button
+            key={btn.buttonId}
+            type={btn.actionType || 'button'}
+            variant={btn.cssClass || 'primary'}
+            onClick={(e) => {
+              if (btn.actionType === 'submit') return // dejar que el formulario lo maneje
+
+              e.preventDefault()
+              if (btn.targetRoute) {
+                window.location.href = btn.targetRoute
+              }
+            }}
+          >
+            {btn.text}
+          </Button>
+        ))}
       </div>
+
     </form>
   )
 }

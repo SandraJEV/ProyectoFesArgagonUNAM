@@ -10,6 +10,8 @@ module.exports = {
         azulBase: '#1D5D94',
         azulBaseHover: '#4188C5',
         background: '#B1D0EB',
+        whiteBase: '#F6F6F6',
+        whiteBaseHover: '#FFFFF'
       },
     },
   },
