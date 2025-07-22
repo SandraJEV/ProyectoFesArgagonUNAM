@@ -15,7 +15,9 @@ export function groupFieldsById(data) {
         orderNumber: item.orderNumber,
         options: item.options,
         validations: [],
-        
+        linkText: item.linkText?.trim() || null,
+        linkHref: item.linkHref?.trim() || null,
+        linkTarget: item.linkTarget?.trim() || '_self',
       }
     }
 

@@ -2,6 +2,8 @@ import { useState } from 'react'
 import { Input } from "../../components/ui/input";
 import { Label } from "../../components/ui/label";
 import { Button } from "../../components/ui/button"
+import DynamicForm from "../../components/ui/FormDinamico"
+import api from '../../services/api'
 import logo  from "../../assets/images/UNAM-FES-Aragon.png" 
 
 function Login() {
@@ -23,46 +25,9 @@ function Login() {
             src="https://www.jmautos.cl/wp-content/themes/car-manager/images/not-login-icon.png"
             className="mx-auto my-6 h-14 w-15"
           />
+          <DynamicForm formId={1} onSubmit={(data) => console.log('Formulario listo:', data)} />
 
-          <form className="space-y-6">
-            <div>
-              <Label htmlFor="Usuario">Usuario</Label>
-              <Input
-                id="Usuario"
-                name="Usuario"
-                type="text"
-                required
-                autoComplete="Usuario"
-                placeholder="Usuario"
-              />
-            </div>
-
-            <div>
-              <Label htmlFor="password">Contraseña</Label>
-              <Input
-                id="password"
-                name="Contraseña"
-                type="password"
-                required
-                autoComplete="current-password"
-                placeholder="*********"
-              />
-              <div className="mt-1 text-sm">
-                <a
-                  href="#"
-                  className="font-semibold text-gray-500 hover:text-gray-400"
-                >
-                  ¿Olvidaste tu contraseña?
-                </a>
-              </div>
-            </div>
-
-            <div>
-              <Button type="submit" className="w-full bg-[#1D5D94] hover:bg-[#4188C5]">
-                Entrar
-              </Button>
-            </div>
-          </form>
+         
         </div>
       </div>
     </>

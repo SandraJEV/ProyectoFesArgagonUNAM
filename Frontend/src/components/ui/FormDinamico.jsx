@@ -114,6 +114,18 @@ function DynamicForm({ formId = 2, onSubmit }) {
           )}
 
           <FormMensajes messages={errors[field.fieldName] || []} />
+          {field.linkText && field.linkHref && (
+            <div className="mt-1 text-sm">
+              <a
+                href={field.linkHref}
+                target={field.linkTarget || '_self'}
+                rel={field.linkTarget === '_blank' ? 'noopener noreferrer' : undefined}
+                className="font-semibold text-gray-500 hover:text-gray-400"
+              >
+                {field.linkText}
+              </a>
+            </div>
+          )}
         </div>
       ))}
 
