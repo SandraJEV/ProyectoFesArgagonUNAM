@@ -3,7 +3,7 @@ import DynamicForm from "../../components/ui/FormDinamico";
 import api from '../../services/api';
 import logo from "../../assets/images/UNAM-FES-Aragon.png";
 
-function UserForm() {
+function RequestForm() {
   return (
     <div className="flex min-h-screen items-center justify-center bg-background px-4 pb-10">
       <img
@@ -13,12 +13,12 @@ function UserForm() {
       />
       <div className="w-full max-w-md mx-auto bg-white rounded-xl shadow-lg px-8 py-10 min-h-[34rem] space-y-6">
         <h2 className="text-center text-2xl font-bold text-gray-900">
-          Registrar Usuario
+          Registrar Reporte
         </h2>
 
         {/* Formulario dinámico */}
         <DynamicForm
-          formId={2}
+          formId={3}
           onSubmit={async (data) => {
             try {
               const response = await api.post('/User/create', data);
@@ -35,4 +35,4 @@ function UserForm() {
   );
 }
 
-export default UserForm;
+export default RequestForm;

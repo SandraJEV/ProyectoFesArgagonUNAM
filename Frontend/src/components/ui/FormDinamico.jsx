@@ -3,11 +3,15 @@ import { Input } from './input'
 import { Label } from './label'
 import { Select } from './Select'
 import { Button } from './button'
+import { TextArea } from "./textArea"
+import { DateInput } from "./dateInput"
+import { CheckBox } from './check'
 import { FormMensajes } from './FormMensajes'
 import api from '../../services/api'
 import { groupFieldsById } from '../../utils/groupFormFields'
 import { validateField } from '../../utils/formValidation'
 import { getCleanFormData } from '../../utils/formHelpers'
+
 
 function DynamicForm({ formId = 2, onSubmit }) {
   const [formFields, setFormFields] = useState([])        // Campos del formulario
@@ -108,6 +112,53 @@ function DynamicForm({ formId = 2, onSubmit }) {
                 setErrors({ ...errors, [field.fieldName]: validation })
               }}
             />
+          ) : field.type === 'textarea' ? (
+            <TextArea
+              rows={field.rows}
+              placeholder={field.placeholder}
+              id={field.fieldName}
+              name={field.fieldName}
+              required={field.isRequired}
+              value={formData[field.fieldName] || ''}
+              onChange={(e) => {
+                const value = e.target.value
+                const updatedData = { ...formData, [field.fieldName]: value }
+                setFormData(updatedData)
+
+                const validation = validateField(value, field.validations, updatedData)
+                setErrors({ ...errors, [field.fieldName]: validation })
+              }}
+
+            />
+          ) : field.type === 'date' ? (
+            <DateInput
+              id={field.fieldName}
+              name={field.fieldName}
+              required={field.isRequired}
+              value={formData[field.fieldName] || ''}
+              onChange={(value) => {
+                const updatedData = { ...formData, [field.fieldName]: value };
+                setFormData(updatedData);
+
+                const validation = validateField(value, field.validations, updatedData);
+                setErrors({ ...errors, [field.fieldName]: validation });
+              }}
+            />
+          ) : field.type === 'checkbox' ? (
+            <CheckBox
+              id={field.fieldName}
+              name={field.fieldName}
+              checked={formData[field.fieldName] || false}
+              onChange={(e) => {
+                const value = e.target.checked;
+                const updatedData = { ...formData, [field.fieldName]: value };
+                setFormData(updatedData);
+
+                const validation = validateField(value, field.validations, updatedData);
+                setErrors({ ...errors, [field.fieldName]: validation });
+              }}
+            ></CheckBox>
+
           ) : (
             <Input
               id={field.fieldName}
@@ -142,6 +193,7 @@ function DynamicForm({ formId = 2, onSubmit }) {
           )}
         </div>
       ))}
+
 
       <div className="flex gap-4">
         {formButtons.map(btn => (

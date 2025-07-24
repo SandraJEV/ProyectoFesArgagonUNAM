@@ -18,6 +18,7 @@ export function groupFieldsById(data) {
         linkText: item.linkText?.trim() || null,
         linkHref: item.linkHref?.trim() || null,
         linkTarget: item.linkTarget?.trim() || '_self',
+        rows: item.rows
       }
     }
 
