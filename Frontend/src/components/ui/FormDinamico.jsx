@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useRef } from 'react'
 import { Input } from './input'
 import { Label } from './label'
 import { Select } from './Select'
@@ -19,19 +19,36 @@ function DynamicForm({ formId = 2, onSubmit }) {
   const [errors, setErrors] = useState({})                // Errores por campo
   const [formButtons, setFormButtons] = useState([]) // Botones del formulario
 
+  var esdebugg = true;
+
+  const handleClear = () => {
+    const resetValues = {};
+    formFields.forEach(f => {
+      resetValues[f.fieldName] = f.type === 'checkbox' ? false : (f.type === 'select' ? null : '');
+    });
+    setFormData(resetValues);
+    setErrors({});
+  };
+
+
+  const loadedFormIdRef = useRef(null);
+
 
   // Obtener y preparar los campos del formulario desde la API
   useEffect(() => {
+    if (loadedFormIdRef.current === formId) return; // Ya está cargado, no hagas nada
+
+    // Si llegó aquí, entonces:
+    loadedFormIdRef.current = formId;
     api.get(`/FormRender/${formId}`)
       .then(res => {
+        esdebugg == true ? console.log('respuesta: ', res) : '';
+
         const { fields, buttons } = res.data
 
         const grouped = groupFieldsById(fields)
         setFormFields(grouped)
         setFormButtons(buttons)
-
-
-
 
         // Parsear las opciones de campos select si vienen como string
         grouped.forEach(field => {
@@ -53,7 +70,8 @@ function DynamicForm({ formId = 2, onSubmit }) {
         })
 
         setFormFields(grouped)
-        console.log('grouped', grouped);
+
+        esdebugg == true ? console.log('grouped', grouped) : '';
 
 
         // Inicializar los valores del formulario
@@ -63,7 +81,7 @@ function DynamicForm({ formId = 2, onSubmit }) {
           initialValues[f.fieldName] = f.type === 'select' ? null : ''
         })
 
-        console.log('VALORES INCIALES ', initialValues);
+        esdebugg == true ? console.log('VALORES INCIALES ', initialValues) : '';
 
         setFormData(initialValues)
       })
@@ -90,6 +108,8 @@ function DynamicForm({ formId = 2, onSubmit }) {
     // Enviar si no hay errores
     if (Object.keys(newErrors).length === 0) {
       const finalData = getCleanFormData(formData)
+      console.log("Datos listos para enviar:", finalData)
+
       onSubmit?.(finalData)
     }
   }
@@ -102,7 +122,7 @@ function DynamicForm({ formId = 2, onSubmit }) {
 
           {field.type === 'select' ? (
             <Select
-              options={field.options}
+              options={[{ id: null, name: 'Seleccionar' }, ...field.options]}
               selected={formData[field.fieldName]}
               onChange={(selectedOption) => {
                 const updatedData = { ...formData, [field.fieldName]: selectedOption }
@@ -202,11 +222,22 @@ function DynamicForm({ formId = 2, onSubmit }) {
             type={btn.actionType || 'button'}
             variant={btn.cssClass || 'primary'}
             onClick={(e) => {
-              if (btn.actionType === 'submit') return // dejar que el formulario lo maneje
+              if (btn.actionType === 'submit') return; // Let form handle submit
 
-              e.preventDefault()
+              e.preventDefault();
+
+              // 👇 Detect "Limpiar" by text or ID
+              if (
+                btn.text.trim().toLowerCase() === 'limpiar' ||
+                btn.buttonId === 5 // ← optional, safer if IDs are unique
+              ) {
+                handleClear();
+                return;
+              }
+
+              // Optional: route
               if (btn.targetRoute) {
-                window.location.href = btn.targetRoute
+                window.location.href = btn.targetRoute;
               }
             }}
           >

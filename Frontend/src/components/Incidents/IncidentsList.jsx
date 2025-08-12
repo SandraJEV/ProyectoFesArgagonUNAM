@@ -12,46 +12,60 @@ import {
     Button,
 } from "@material-tailwind/react";
 
-import { useState } from "react";
+import { Select } from './../ui/Select'
+import { useState, useEffect } from "react";
+import { Badge } from '../ui/Badge'
+import { badgeColorMap } from '../../config/badgeColors'
+import api from './../../services/api'
 
 const TABLE_HEAD = [
-    { label: "Nombre", key: "name" },
-    { label: "Rol", key: "job" },
-    { label: "Estado", key: "online" },
-    { label: "Fecha", key: "date" },
-    { label: "", key: "" },
+    { label: "Descripción", key: "Description" },
+    { label: "Categoría", key: "Name" },
+    { label: "Reportó", key: "Reporta" },
+    { label: "Responsable", key: "Responsable" },
+    { label: "Estado", key: "Estatus" },
+    { label: "Fecha límite", key: "DeadlineDate" },
+    { label: "", key: "" }
 ];
-
 const TABLE_ROWS = [
-    {
-        name: "John Michael",
-        email: "john@creative-tim.com",
-        job: "Manager",
-        org: "Soporte",
-        online: true,
-        date: "23/04/18",
-    },
-    {
-        name: "Alexa Liras",
-        email: "alexa@creative-tim.com",
-        job: "Developer",
-        org: "Soporte",
-        online: false,
-        date: "01/02/20",
-    },
-    {
-        name: "Laurent Perrier",
-        email: "laurent@creative-tim.com",
-        job: "Support",
-        org: "Tickets",
-        online: true,
-        date: "15/06/23",
-    },
+
 ];
 
-export function IncidentsList() {
+export function IncidentsList({ data = [] }) {
+    const rows = data?.data ?? [];
     const [sortColumn, setSortColumn] = useState("");
     const [sortDirection, setSortDirection] = useState("asc");
+    const [assigned, setAssigned] = useState({});
+    const [loadingUsers, setLoadingUsers] = useState(false);
+    const [userOptions, setUserOptions] = useState([]); // [{id, name}]
+    const [usersError, setUsersError] = useState(null);
+
+
+    // Cargar usuarios 1 sola vez
+    useEffect(() => {
+        let alive = true;                // evita setState si el componente se desmonta
+        setLoadingUsers(true);
+        setUsersError(null);
+
+        api.get("/User")
+            .then((res) => {
+                if (!alive) return;
+                const items = Array.isArray(res.data) ? res.data : res.data?.data ?? [];
+                console.log(items);
+                
+                const mapped = items.map((u) => ({
+                    id: u.UserID ?? u.userID ?? u.id ?? u.Id,
+                    name:    `${u.firstName} ${u.lastName}`
+                }));
+                setUserOptions(mapped);
+                console.log('map ',mapped);
+                      
+            })
+            .catch((err) => setUsersError(err?.message || "Error al cargar usuarios"))
+            .finally(() => alive && setLoadingUsers(false));
+
+        return () => { alive = false; };
+    }, []);
 
     const handleSort = (column) => {
         if (!column) return;
@@ -71,7 +85,7 @@ export function IncidentsList() {
             : <ChevronDownIcon className="h-4 w-4" />;
     };
 
-    const sortedRows = [...TABLE_ROWS].sort((a, b) => {
+    const sortedRows = [...rows].sort((a, b) => {
         const aVal = a[sortColumn];
         const bVal = b[sortColumn];
 
@@ -83,14 +97,9 @@ export function IncidentsList() {
                 : bVal.localeCompare(aVal);
         }
 
-        if (typeof aVal === "boolean") {
-            return sortDirection === "asc"
-                ? Number(aVal) - Number(bVal)
-                : Number(bVal) - Number(aVal);
-        }
-
         return 0;
     });
+
 
     return (
         <div className="w-full bg-white px-4 md:px-8 py-6 overflow-auto">
@@ -113,30 +122,34 @@ export function IncidentsList() {
                 </thead>
                 <tbody>
                     {sortedRows.map((row, index) => (
-                        <tr key={row.name} className={index % 2 === 0 ? "bg-white" : "bg-blue-gray-50/50"}>
-                            <td className="px-4 py-3">
-                                <div className="flex items-center gap-3">
-                                    <div className="flex flex-col">
-                                        <span className="text-sm font-medium text-gray-800">{row.name}</span>
-                                        <span className="text-xs text-gray-500">{row.email}</span>
-                                    </div>
-                                </div>
+                        <tr key={row.IncidentID} className={index % 2 === 0 ? "bg-white" : "bg-gray-50"}>
+                            <td className="px-4 py-3 text-sm">{row.Description}</td>
+                            <td className="px-4 py-3 text-sm">{row.Name}</td>
+                            <td className="px-4 py-3 text-sm">{row.Reporta}</td>
+
+                            <td className="px-4 py-3 text-sm">
+                                {assigned ? (
+                                    <Select
+                                        id={`assignee-${row.IncidentID}`}
+                                        options={[{ id: null, name: 'Seleccionar' }, ...userOptions]}
+                                        selected={assigned[row.IncidentID] ?? null}
+                                        onChange={(selectedOption) => {
+                                            setAssignments(prev => ({ ...prev, [row.IncidentID]: setUserOptions }));
+                                        }}
+                                    />
+                                ) : (
+                                    row.Responsable || 'Sin asignar'
+                                )}
                             </td>
-                            <td className="px-4 py-3 text-sm text-gray-700">{row.job}</td>
                             <td className="px-4 py-3">
-                                <span
-                                    className={`inline-block text-xs px-2 py-1 rounded-full font-medium ${row.online
-                                        ? "bg-green-100 text-green-800"
-                                        : "bg-gray-200 text-gray-600"
-                                        }`}
-                                >
-                                    {row.online ? "Activo" : "Inactivo"}
-                                </span>
+                                <Badge color={badgeColorMap[row.Color] || "gray"}>
+                                    {row.Estatus}
+                                </Badge>
                             </td>
-                            <td className="px-4 py-3 text-sm text-gray-600">{row.date}</td>
+                            <td className="px-4 py-3 text-sm">{row.DeadlineDate}</td>
                             <td className="px-4 py-3">
-                                <IconButton variant="text" size="sm">
-                                    <PencilIcon className="h-4 w-4 text-blue-500" />
+                                <IconButton variant="text" size="sm" >
+                                    <PencilIcon className="h-4 w-4 text-blue-500" onClick={() => setAssigned(true)} />
                                 </IconButton>
                             </td>
                         </tr>

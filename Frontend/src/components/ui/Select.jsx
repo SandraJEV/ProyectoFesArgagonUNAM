@@ -1,11 +1,19 @@
 'use client'
-import { useState } from 'react'
-import { Label, Listbox, ListboxButton, ListboxOption, ListboxOptions } from '@headlessui/react'
+import { useState, useEffect } from 'react'
+import { Listbox, ListboxButton, ListboxOption, ListboxOptions } from '@headlessui/react'
 import { ChevronUpDownIcon } from '@heroicons/react/16/solid'
 import { CheckIcon } from '@heroicons/react/20/solid'
+import "./../../styles/tooltip.css";
 
 export function Select({ options = [], selected, onChange }) {
-  const [selectedOption, setSelectedOption] = useState(selected ?? null)  
+  const [selectedOption, setSelectedOption] = useState(
+    selected ?? { id: null, name: 'Seleccionar' }
+  );
+
+  useEffect(() => {
+    setSelectedOption(selected ?? { id: null, name: 'Seleccionar' });
+  }, [selected]);
+
   return (
     <Listbox
       value={selectedOption}
@@ -14,7 +22,6 @@ export function Select({ options = [], selected, onChange }) {
         onChange?.(value)
       }}
     >
-
       <div className="relative">
         <ListboxButton className="grid w-full cursor-default grid-cols-1 rounded-md
                                 bg-white py-1.5 pl-3 pr-2 text-left text-gray-900 outline outline-1 -outline-offset-1 
@@ -23,8 +30,10 @@ export function Select({ options = [], selected, onChange }) {
             {selectedOption?.imagen && (
               <img alt="" src={selectedOption.imagen} className="size-5 shrink-0 rounded-full" />
             )}
-
-            <span className={`block truncate ${selectedOption?.imagen ? 'ml-1' : ''}`}>
+            <span
+              className={`block truncate ${selectedOption?.imagen ? 'ml-1' : ''}`}
+              title={selectedOption?.name}  // tooltip nativo opcional
+            >
               {selectedOption?.name || 'Seleccionar'}
             </span>
           </span>
@@ -36,24 +45,27 @@ export function Select({ options = [], selected, onChange }) {
 
         <ListboxOptions
           transition
-          className="absolute z-10 mt-1 max-h-56 w-full overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black/5 focus:outline-none data-[closed]:data-[leave]:opacity-0 data-[leave]:transition data-[leave]:duration-100 data-[leave]:ease-in sm:text-sm"
+          className="absolute left-0 z-10 mt-1 max-h-56 w-max min-w-[14rem] max-w-[32rem] 
+                     overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black/5 
+                     focus:outline-none data-[closed]:data-[leave]:opacity-0 data-[leave]:transition 
+                     data-[leave]:duration-100 data-[leave]:ease-in sm:text-sm"
         >
           {options.map((option) => (
             <ListboxOption
               key={option.id}
               value={option}
               disabled={option.id === -1}
-              className="group relative cursor-default select-none py-2 pl-3 pr-9 text-gray-900 data-[focus]:bg-azulBase data-[focus]:text-white data-[focus]:outline-none"
+              className="group relative cursor-default select-none py-2 pl-3 pr-9 text-gray-900 
+                         data-[focus]:bg-azulBase data-[focus]:text-white data-[focus]:outline-none"
             >
               <div className="flex items-center">
                 {option.imagen && (
-                  <img
-                    alt=""
-                    src={option.imagen}
-                    className="size-5 shrink-0 rounded-full"
-                  />
+                  <img alt="" src={option.imagen} className="size-5 shrink-0 rounded-full" />
                 )}
-                <span className="ml-3 block truncate font-normal group-data-[selected]:font-semibold">
+                <span
+                  className="ml-3 block font-normal whitespace-nowrap group-data-[selected]:font-semibold"
+                  title={option.name}  // tooltip nativo opcional
+                >
                   {option.name}
                 </span>
               </div>
@@ -68,7 +80,5 @@ export function Select({ options = [], selected, onChange }) {
     </Listbox>
   )
 }
-
-
 
 export default Select;

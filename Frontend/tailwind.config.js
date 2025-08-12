@@ -6,6 +6,17 @@ module.exports = {
     "./index.html",
     "./src/**/*.{js,ts,jsx,tsx}",
   ],
+  safelist: [
+    {
+      pattern: /bg-(sky|amber|emerald|rose|gray|red|orange|yellow|lime|green|teal|cyan|blue|indigo|violet|purple|fuchsia|pink|zinc)-100/,
+    },
+    {
+      pattern: /text-(sky|amber|emerald|rose|gray|red|orange|yellow|lime|green|teal|cyan|blue|indigo|violet|purple|fuchsia|pink|zinc)-800/,
+    },
+    {
+      pattern: /ring-(sky|amber|emerald|rose|gray|red|orange|yellow|lime|green|teal|cyan|blue|indigo|violet|purple|fuchsia|pink|zinc)-300/,
+    },
+  ],
   theme: {
     extend: {
       colors: {
