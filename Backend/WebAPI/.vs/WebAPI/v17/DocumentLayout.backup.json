@@ -1,0 +1,269 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "C:\\Users\\USER\\OneDrive\\Documentos\\ProyectoFesArgagonUNAM\\Backend\\WebAPI\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{E37FF41B-7ADE-4E3C-BD4A-C499A4FF76E7}|WebAPI.csproj|c:\\users\\user\\onedrive\\documentos\\proyectofesargagonunam\\backend\\webapi\\services\\validationservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{E37FF41B-7ADE-4E3C-BD4A-C499A4FF76E7}|WebAPI.csproj|solutionrelative:services\\validationservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{E37FF41B-7ADE-4E3C-BD4A-C499A4FF76E7}|WebAPI.csproj|c:\\users\\user\\onedrive\\documentos\\proyectofesargagonunam\\backend\\webapi\\controllers\\validationcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{E37FF41B-7ADE-4E3C-BD4A-C499A4FF76E7}|WebAPI.csproj|solutionrelative:controllers\\validationcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{E37FF41B-7ADE-4E3C-BD4A-C499A4FF76E7}|WebAPI.csproj|c:\\users\\user\\onedrive\\documentos\\proyectofesargagonunam\\backend\\webapi\\services\\userservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{E37FF41B-7ADE-4E3C-BD4A-C499A4FF76E7}|WebAPI.csproj|solutionrelative:services\\userservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{E37FF41B-7ADE-4E3C-BD4A-C499A4FF76E7}|WebAPI.csproj|c:\\users\\user\\onedrive\\documentos\\proyectofesargagonunam\\backend\\webapi\\controllers\\rolecontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{E37FF41B-7ADE-4E3C-BD4A-C499A4FF76E7}|WebAPI.csproj|solutionrelative:controllers\\rolecontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{E37FF41B-7ADE-4E3C-BD4A-C499A4FF76E7}|WebAPI.csproj|c:\\users\\user\\onedrive\\documentos\\proyectofesargagonunam\\backend\\webapi\\controllers\\usercontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{E37FF41B-7ADE-4E3C-BD4A-C499A4FF76E7}|WebAPI.csproj|solutionrelative:controllers\\usercontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{E37FF41B-7ADE-4E3C-BD4A-C499A4FF76E7}|WebAPI.csproj|c:\\users\\user\\onedrive\\documentos\\proyectofesargagonunam\\backend\\webapi\\controllers\\areacontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{E37FF41B-7ADE-4E3C-BD4A-C499A4FF76E7}|WebAPI.csproj|solutionrelative:controllers\\areacontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{E37FF41B-7ADE-4E3C-BD4A-C499A4FF76E7}|WebAPI.csproj|c:\\users\\user\\onedrive\\documentos\\proyectofesargagonunam\\backend\\webapi\\models\\validation.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{E37FF41B-7ADE-4E3C-BD4A-C499A4FF76E7}|WebAPI.csproj|solutionrelative:models\\validation.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{E37FF41B-7ADE-4E3C-BD4A-C499A4FF76E7}|WebAPI.csproj|c:\\users\\user\\onedrive\\documentos\\proyectofesargagonunam\\backend\\webapi\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{E37FF41B-7ADE-4E3C-BD4A-C499A4FF76E7}|WebAPI.csproj|solutionrelative:program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{E37FF41B-7ADE-4E3C-BD4A-C499A4FF76E7}|WebAPI.csproj|c:\\users\\user\\onedrive\\documentos\\proyectofesargagonunam\\backend\\webapi\\services\\areaservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{E37FF41B-7ADE-4E3C-BD4A-C499A4FF76E7}|WebAPI.csproj|solutionrelative:services\\areaservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{E37FF41B-7ADE-4E3C-BD4A-C499A4FF76E7}|WebAPI.csproj|c:\\users\\user\\onedrive\\documentos\\proyectofesargagonunam\\backend\\webapi\\models\\area.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{E37FF41B-7ADE-4E3C-BD4A-C499A4FF76E7}|WebAPI.csproj|solutionrelative:models\\area.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{E37FF41B-7ADE-4E3C-BD4A-C499A4FF76E7}|WebAPI.csproj|c:\\users\\user\\onedrive\\documentos\\proyectofesargagonunam\\backend\\webapi\\models\\role.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{E37FF41B-7ADE-4E3C-BD4A-C499A4FF76E7}|WebAPI.csproj|solutionrelative:models\\role.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{E37FF41B-7ADE-4E3C-BD4A-C499A4FF76E7}|WebAPI.csproj|c:\\users\\user\\onedrive\\documentos\\proyectofesargagonunam\\backend\\webapi\\models\\user.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{E37FF41B-7ADE-4E3C-BD4A-C499A4FF76E7}|WebAPI.csproj|solutionrelative:models\\user.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{E37FF41B-7ADE-4E3C-BD4A-C499A4FF76E7}|WebAPI.csproj|c:\\users\\user\\onedrive\\documentos\\proyectofesargagonunam\\backend\\webapi\\models\\incident.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{E37FF41B-7ADE-4E3C-BD4A-C499A4FF76E7}|WebAPI.csproj|solutionrelative:models\\incident.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{E37FF41B-7ADE-4E3C-BD4A-C499A4FF76E7}|WebAPI.csproj|c:\\users\\user\\onedrive\\documentos\\proyectofesargagonunam\\backend\\webapi\\controllers\\healthcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{E37FF41B-7ADE-4E3C-BD4A-C499A4FF76E7}|WebAPI.csproj|solutionrelative:controllers\\healthcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{E37FF41B-7ADE-4E3C-BD4A-C499A4FF76E7}|WebAPI.csproj|c:\\users\\user\\onedrive\\documentos\\proyectofesargagonunam\\backend\\webapi\\services\\roleservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{E37FF41B-7ADE-4E3C-BD4A-C499A4FF76E7}|WebAPI.csproj|solutionrelative:services\\roleservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 215,
+          "SelectedChildIndex": 0,
+          "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "ValidationService.cs",
+              "DocumentMoniker": "C:\\Users\\USER\\OneDrive\\Documentos\\ProyectoFesArgagonUNAM\\Backend\\WebAPI\\Services\\ValidationService.cs",
+              "RelativeDocumentMoniker": "Services\\ValidationService.cs",
+              "ToolTip": "C:\\Users\\USER\\OneDrive\\Documentos\\ProyectoFesArgagonUNAM\\Backend\\WebAPI\\Services\\ValidationService.cs",
+              "RelativeToolTip": "Services\\ValidationService.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA0AAAALAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-07-17T23:17:03.447Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "ValidationController.cs",
+              "DocumentMoniker": "C:\\Users\\USER\\OneDrive\\Documentos\\ProyectoFesArgagonUNAM\\Backend\\WebAPI\\Controllers\\ValidationController.cs",
+              "RelativeDocumentMoniker": "Controllers\\ValidationController.cs",
+              "ToolTip": "C:\\Users\\USER\\OneDrive\\Documentos\\ProyectoFesArgagonUNAM\\Backend\\WebAPI\\Controllers\\ValidationController.cs",
+              "RelativeToolTip": "Controllers\\ValidationController.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAYAAAAeAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-07-17T23:16:40.845Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 6,
+              "Title": "Validation.cs",
+              "DocumentMoniker": "C:\\Users\\USER\\OneDrive\\Documentos\\ProyectoFesArgagonUNAM\\Backend\\WebAPI\\Models\\Validation.cs",
+              "RelativeDocumentMoniker": "Models\\Validation.cs",
+              "ToolTip": "C:\\Users\\USER\\OneDrive\\Documentos\\ProyectoFesArgagonUNAM\\Backend\\WebAPI\\Models\\Validation.cs",
+              "RelativeToolTip": "Models\\Validation.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-07-17T23:16:17.176Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "AreaController.cs",
+              "DocumentMoniker": "C:\\Users\\USER\\OneDrive\\Documentos\\ProyectoFesArgagonUNAM\\Backend\\WebAPI\\Controllers\\AreaController.cs",
+              "RelativeDocumentMoniker": "Controllers\\AreaController.cs",
+              "ToolTip": "C:\\Users\\USER\\OneDrive\\Documentos\\ProyectoFesArgagonUNAM\\Backend\\WebAPI\\Controllers\\AreaController.cs",
+              "RelativeToolTip": "Controllers\\AreaController.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-07-17T20:37:58.854Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "RoleController.cs",
+              "DocumentMoniker": "C:\\Users\\USER\\OneDrive\\Documentos\\ProyectoFesArgagonUNAM\\Backend\\WebAPI\\Controllers\\RoleController.cs",
+              "RelativeDocumentMoniker": "Controllers\\RoleController.cs",
+              "ToolTip": "C:\\Users\\USER\\OneDrive\\Documentos\\ProyectoFesArgagonUNAM\\Backend\\WebAPI\\Controllers\\RoleController.cs",
+              "RelativeToolTip": "Controllers\\RoleController.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAkAAAA6AAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-07-17T02:44:37.422Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 8,
+              "Title": "AreaService.cs",
+              "DocumentMoniker": "C:\\Users\\USER\\OneDrive\\Documentos\\ProyectoFesArgagonUNAM\\Backend\\WebAPI\\Services\\AreaService.cs",
+              "RelativeDocumentMoniker": "Services\\AreaService.cs",
+              "ToolTip": "C:\\Users\\USER\\OneDrive\\Documentos\\ProyectoFesArgagonUNAM\\Backend\\WebAPI\\Services\\AreaService.cs",
+              "RelativeToolTip": "Services\\AreaService.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABEAAAA8AAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-07-17T20:39:10.227Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 7,
+              "Title": "Program.cs",
+              "DocumentMoniker": "C:\\Users\\USER\\OneDrive\\Documentos\\ProyectoFesArgagonUNAM\\Backend\\WebAPI\\Program.cs",
+              "RelativeDocumentMoniker": "Program.cs",
+              "ToolTip": "C:\\Users\\USER\\OneDrive\\Documentos\\ProyectoFesArgagonUNAM\\Backend\\WebAPI\\Program.cs",
+              "RelativeToolTip": "Program.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABYAAAAzAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-07-16T23:12:48.656Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 14,
+              "Title": "RoleService.cs",
+              "DocumentMoniker": "C:\\Users\\USER\\OneDrive\\Documentos\\ProyectoFesArgagonUNAM\\Backend\\WebAPI\\Services\\RoleService.cs",
+              "RelativeDocumentMoniker": "Services\\RoleService.cs",
+              "ToolTip": "C:\\Users\\USER\\OneDrive\\Documentos\\ProyectoFesArgagonUNAM\\Backend\\WebAPI\\Services\\RoleService.cs",
+              "RelativeToolTip": "Services\\RoleService.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAwAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-07-17T02:50:06.725Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 12,
+              "Title": "Incident.cs",
+              "DocumentMoniker": "C:\\Users\\USER\\OneDrive\\Documentos\\ProyectoFesArgagonUNAM\\Backend\\WebAPI\\Models\\Incident.cs",
+              "RelativeDocumentMoniker": "Models\\Incident.cs",
+              "ToolTip": "C:\\Users\\USER\\OneDrive\\Documentos\\ProyectoFesArgagonUNAM\\Backend\\WebAPI\\Models\\Incident.cs",
+              "RelativeToolTip": "Models\\Incident.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAwAAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-07-15T20:42:07.876Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 9,
+              "Title": "Area.cs",
+              "DocumentMoniker": "C:\\Users\\USER\\OneDrive\\Documentos\\ProyectoFesArgagonUNAM\\Backend\\WebAPI\\Models\\Area.cs",
+              "RelativeDocumentMoniker": "Models\\Area.cs",
+              "ToolTip": "C:\\Users\\USER\\OneDrive\\Documentos\\ProyectoFesArgagonUNAM\\Backend\\WebAPI\\Models\\Area.cs",
+              "RelativeToolTip": "Models\\Area.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAoAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-07-15T20:41:37.529Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 10,
+              "Title": "Role.cs",
+              "DocumentMoniker": "C:\\Users\\USER\\OneDrive\\Documentos\\ProyectoFesArgagonUNAM\\Backend\\WebAPI\\Models\\Role.cs",
+              "RelativeDocumentMoniker": "Models\\Role.cs",
+              "ToolTip": "C:\\Users\\USER\\OneDrive\\Documentos\\ProyectoFesArgagonUNAM\\Backend\\WebAPI\\Models\\Role.cs",
+              "RelativeToolTip": "Models\\Role.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAoAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-07-15T20:34:13.292Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 11,
+              "Title": "User.cs",
+              "DocumentMoniker": "C:\\Users\\USER\\OneDrive\\Documentos\\ProyectoFesArgagonUNAM\\Backend\\WebAPI\\Models\\User.cs",
+              "RelativeDocumentMoniker": "Models\\User.cs",
+              "ToolTip": "C:\\Users\\USER\\OneDrive\\Documentos\\ProyectoFesArgagonUNAM\\Backend\\WebAPI\\Models\\User.cs",
+              "RelativeToolTip": "Models\\User.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAACAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-07-15T20:25:25.14Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 13,
+              "Title": "HealthController.cs",
+              "DocumentMoniker": "C:\\Users\\USER\\OneDrive\\Documentos\\ProyectoFesArgagonUNAM\\Backend\\WebAPI\\Controllers\\HealthController.cs",
+              "RelativeDocumentMoniker": "Controllers\\HealthController.cs",
+              "ToolTip": "C:\\Users\\USER\\OneDrive\\Documentos\\ProyectoFesArgagonUNAM\\Backend\\WebAPI\\Controllers\\HealthController.cs",
+              "RelativeToolTip": "Controllers\\HealthController.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABMAAAAsAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-07-15T04:09:02.559Z"
+            }
+          ]
+        },
+        {
+          "DockedWidth": 204,
+          "SelectedChildIndex": 0,
+          "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "UserService.cs",
+              "DocumentMoniker": "C:\\Users\\USER\\OneDrive\\Documentos\\ProyectoFesArgagonUNAM\\Backend\\WebAPI\\Services\\UserService.cs",
+              "RelativeDocumentMoniker": "Services\\UserService.cs",
+              "ToolTip": "C:\\Users\\USER\\OneDrive\\Documentos\\ProyectoFesArgagonUNAM\\Backend\\WebAPI\\Services\\UserService.cs",
+              "RelativeToolTip": "Services\\UserService.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-07-16T01:27:27.977Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "UserController.cs",
+              "DocumentMoniker": "C:\\Users\\USER\\OneDrive\\Documentos\\ProyectoFesArgagonUNAM\\Backend\\WebAPI\\Controllers\\UserController.cs",
+              "RelativeDocumentMoniker": "Controllers\\UserController.cs",
+              "ToolTip": "C:\\Users\\USER\\OneDrive\\Documentos\\ProyectoFesArgagonUNAM\\Backend\\WebAPI\\Controllers\\UserController.cs",
+              "RelativeToolTip": "Controllers\\UserController.cs",
+              "ViewState": "AgIAAB8AAAAAAAAAAAAgwDgAAAA6AAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-07-16T01:36:12.87Z"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

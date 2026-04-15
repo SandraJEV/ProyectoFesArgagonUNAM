@@ -1,0 +1,253 @@
+import { useEffect, useState, useRef } from 'react'
+import { Input } from './input'
+import { Label } from './label'
+import { Select } from './Select'
+import { Button } from './button'
+import { TextArea } from "./textArea"
+import { DateInput } from "./dateInput"
+import { CheckBox } from './check'
+import { FormMensajes } from './FormMensajes'
+import api from '../../services/api'
+import { groupFieldsById } from '../../utils/groupFormFields'
+import { validateField } from '../../utils/formValidation'
+import { getCleanFormData } from '../../utils/formHelpers'
+
+
+function DynamicForm({ formId = 2, onSubmit }) {
+  const [formFields, setFormFields] = useState([])        // Campos del formulario
+  const [formData, setFormData] = useState({})            // Valores actuales del formulario
+  const [errors, setErrors] = useState({})                // Errores por campo
+  const [formButtons, setFormButtons] = useState([]) // Botones del formulario
+
+  var esdebugg = true;
+
+  const handleClear = () => {
+    const resetValues = {};
+    formFields.forEach(f => {
+      resetValues[f.fieldName] = f.type === 'checkbox' ? false : (f.type === 'select' ? null : '');
+    });
+    setFormData(resetValues);
+    setErrors({});
+  };
+
+
+  const loadedFormIdRef = useRef(null);
+
+
+  // Obtener y preparar los campos del formulario desde la API
+  useEffect(() => {
+    if (loadedFormIdRef.current === formId) return; // Ya está cargado, no hagas nada
+
+    // Si llegó aquí, entonces:
+    loadedFormIdRef.current = formId;
+    api.get(`/FormRender/${formId}`)
+      .then(res => {
+        esdebugg == true ? console.log('respuesta: ', res) : '';
+
+        const { fields, buttons } = res.data
+
+        const grouped = groupFieldsById(fields)
+        setFormFields(grouped)
+        setFormButtons(buttons)
+
+        // Parsear las opciones de campos select si vienen como string
+        grouped.forEach(field => {
+          if (field.type === 'select' && typeof field.options === 'string') {
+            try {
+              const parsed = JSON.parse(field.options)
+
+              // Normaliza cada opción solo con id y name
+              field.options = parsed.map(opt => ({
+                id: opt.Id ?? opt.id,
+                name: opt.Name ?? opt.name
+              }))
+            } catch (err) {
+              console.warn(`Error al parsear options para ${field.fieldName}:`, err)
+              field.options = []
+            }
+          }
+
+        })
+
+        setFormFields(grouped)
+
+        esdebugg == true ? console.log('grouped', grouped) : '';
+
+
+        // Inicializar los valores del formulario
+        const initialValues = {}
+        grouped.forEach(f => {
+          // Para selects, iniciar como null (sin opción seleccionada)
+          initialValues[f.fieldName] = f.type === 'select' ? null : ''
+        })
+
+        esdebugg == true ? console.log('VALORES INCIALES ', initialValues) : '';
+
+        setFormData(initialValues)
+      })
+      .catch(err => console.error('Error al cargar campos dinámicos', err))
+  }, [formId])
+
+  // Manejar el envío del formulario
+  const handleSubmit = (e) => {
+    e.preventDefault()
+
+    const newErrors = {}
+
+    // Validar todos los campos
+    formFields.forEach(field => {
+      const value = formData[field.fieldName]
+      const errs = validateField(value, field.validations, formData)
+      if (errs.length) {
+        newErrors[field.fieldName] = errs
+      }
+    })
+
+    setErrors(newErrors)
+
+    // Enviar si no hay errores
+    if (Object.keys(newErrors).length === 0) {
+      const finalData = getCleanFormData(formData)
+      console.log("Datos listos para enviar:", finalData)
+
+      onSubmit?.(finalData)
+    }
+  }
+
+  return (
+    <form className="space-y-6" onSubmit={handleSubmit}>
+      {formFields.map(field => (
+        <div key={field.fieldId}>
+          <Label htmlFor={field.fieldName}>{field.label}</Label>
+
+          {field.type === 'select' ? (
+            <Select
+              options={[{ id: null, name: 'Seleccionar' }, ...field.options]}
+              selected={formData[field.fieldName]}
+              onChange={(selectedOption) => {
+                const updatedData = { ...formData, [field.fieldName]: selectedOption }
+                setFormData(updatedData)
+
+                const validation = validateField(selectedOption, field.validations, updatedData)
+                setErrors({ ...errors, [field.fieldName]: validation })
+              }}
+            />
+          ) : field.type === 'textarea' ? (
+            <TextArea
+              rows={field.rows}
+              placeholder={field.placeholder}
+              id={field.fieldName}
+              name={field.fieldName}
+              required={field.isRequired}
+              value={formData[field.fieldName] || ''}
+              onChange={(e) => {
+                const value = e.target.value
+                const updatedData = { ...formData, [field.fieldName]: value }
+                setFormData(updatedData)
+
+                const validation = validateField(value, field.validations, updatedData)
+                setErrors({ ...errors, [field.fieldName]: validation })
+              }}
+
+            />
+          ) : field.type === 'date' ? (
+            <DateInput
+              id={field.fieldName}
+              name={field.fieldName}
+              required={field.isRequired}
+              value={formData[field.fieldName] || ''}
+              onChange={(value) => {
+                const updatedData = { ...formData, [field.fieldName]: value };
+                setFormData(updatedData);
+
+                const validation = validateField(value, field.validations, updatedData);
+                setErrors({ ...errors, [field.fieldName]: validation });
+              }}
+            />
+          ) : field.type === 'checkbox' ? (
+            <CheckBox
+              id={field.fieldName}
+              name={field.fieldName}
+              checked={formData[field.fieldName] || false}
+              onChange={(e) => {
+                const value = e.target.checked;
+                const updatedData = { ...formData, [field.fieldName]: value };
+                setFormData(updatedData);
+
+                const validation = validateField(value, field.validations, updatedData);
+                setErrors({ ...errors, [field.fieldName]: validation });
+              }}
+            ></CheckBox>
+
+          ) : (
+            <Input
+              id={field.fieldName}
+              name={field.fieldName}
+              type={field.type}
+              placeholder={field.placeholder}
+              required={field.isRequired}
+              value={formData[field.fieldName] || ''}
+              onChange={(e) => {
+                const value = e.target.value
+                const updatedData = { ...formData, [field.fieldName]: value }
+                setFormData(updatedData)
+
+                const validation = validateField(value, field.validations, updatedData)
+                setErrors({ ...errors, [field.fieldName]: validation })
+              }}
+            />
+          )}
+
+          <FormMensajes messages={errors[field.fieldName] || []} />
+          {field.linkText && field.linkHref && (
+            <div className="mt-1 text-sm">
+              <a
+                href={field.linkHref}
+                target={field.linkTarget || '_self'}
+                rel={field.linkTarget === '_blank' ? 'noopener noreferrer' : undefined}
+                className="font-semibold text-gray-500 hover:text-gray-400"
+              >
+                {field.linkText}
+              </a>
+            </div>
+          )}
+        </div>
+      ))}
+
+
+      <div className="flex gap-4">
+        {formButtons.map(btn => (
+          <Button
+            key={btn.buttonId}
+            type={btn.actionType || 'button'}
+            variant={btn.cssClass || 'primary'}
+            onClick={(e) => {
+              if (btn.actionType === 'submit') return; // Let form handle submit
+
+              e.preventDefault();
+
+              // 👇 Detect "Limpiar" by text or ID
+              if (
+                btn.text.trim().toLowerCase() === 'limpiar' ||
+                btn.buttonId === 5 // ← optional, safer if IDs are unique
+              ) {
+                handleClear();
+                return;
+              }
+
+              // Optional: route
+              if (btn.targetRoute) {
+                window.location.href = btn.targetRoute;
+              }
+            }}
+          >
+            {btn.text}
+          </Button>
+        ))}
+      </div>
+
+    </form>
+  )
+}
+
+export default DynamicForm
