@@ -21,5 +21,13 @@ dist-ssr
 *.suo
 *.ntvs*
 *.njsproj
-*.sln
 *.sw?
+
+# Backend (.NET)
+bin/
+obj/
+
+# Frontend
+node_modules/
+dist/
+build/
