@@ -28,25 +28,20 @@ builder.Services.AddCors(options =>
     options.AddPolicy("AllowReactApp", policy =>
     {
         policy
-            .WithOrigins("http://localhost:5173") // Puerto típico de React
+            .AllowAnyOrigin()  
             .AllowAnyHeader()
             .AllowAnyMethod();
     });
 });
 
-
 var app = builder.Build();
 
+app.UseSwagger();
+app.UseSwaggerUI();
+
+// app.UseHttpsRedirection();
+
 app.UseCors("AllowReactApp");
-
-// Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
-{
-    app.UseSwagger();
-    app.UseSwaggerUI();
-}
-
-app.UseHttpsRedirection();
 
 app.UseAuthorization();
 

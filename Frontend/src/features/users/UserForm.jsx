@@ -18,7 +18,7 @@ function UserForm() {
 
         {/* Formulario dinámico */}
         <DynamicForm
-          formId={2}
+          formId={1}
           onSubmit={async (data) => {
             try {
               const response = await api.post('/User/create', data);

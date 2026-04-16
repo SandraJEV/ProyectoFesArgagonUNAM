@@ -9,18 +9,24 @@
  * @returns {Object} cleaned - Datos listos para enviar al backend
  */
 export function getCleanFormData(formData) {
-  var esdebugg = false;
-  esdebugg == true ? console.log('data  antes de procesar: ', formData) : '' ;
-
   const cleaned = {}
-  
-  
-  Object.entries(formData).forEach(([key, value]) => {
-    cleaned[key] = (value && typeof value === 'object' && value.id !== undefined)
-      ? value.id
-      : value
 
-      
+  Object.entries(formData).forEach(([key, value]) => {
+
+    // ✅ Si es select → usar id
+    if (value && typeof value === 'object' && value.id !== undefined) {
+      value = value.id
+    }
+
+    // ✅ eliminar vacíos
+    if (
+      value !== null &&
+      value !== undefined &&
+      value !== ""
+    ) {
+      cleaned[key] = value
+    }
+
   })
 
   return cleaned

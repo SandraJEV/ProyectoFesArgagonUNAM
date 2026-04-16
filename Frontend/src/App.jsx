@@ -15,10 +15,11 @@ function App() {
 
       <Header />
       {/* <div className="w-[90%] max-w-screen-xl mt-8 mx-auto bg-white rounded-xl shadow-lg px-4 md:px-10 py-10 min-h-[10rem] space-y-6">
+        hOLA REct
       </div> */}
 
-
-      <IncidentsView></IncidentsView>
+        <UserForm></UserForm>
+      {/* <IncidentsView></IncidentsView> */}
       {/* <RequestForm/> */}
 
     </div>
