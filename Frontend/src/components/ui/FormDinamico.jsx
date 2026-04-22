@@ -42,7 +42,7 @@ function DynamicForm({ formId = 2, onSubmit }) {
     loadedFormIdRef.current = formId;
     api.get(`/FormRender/${formId}`)
       .then(res => {
-        esdebugg == true ? console.log('respuesta: ', res) : '';
+        esdebugg == true ? console.log('respuesta: ', res.data) : '';
 
         const { fields, buttons } = res.data
 
@@ -219,16 +219,16 @@ function DynamicForm({ formId = 2, onSubmit }) {
         {formButtons.map(btn => (
           <Button
             key={btn.buttonId}
-            type={btn.actionType || 'button'}
+            type={btn.type || 'button'}
             variant={btn.cssClass || 'primary'}
             onClick={(e) => {
-              if (btn.actionType === 'submit') return; // Let form handle submit
+              if (btn.type === 'submit') return; // Let form handle submit
 
               e.preventDefault();
 
-              // 👇 Detect "Limpiar" by text or ID
+              // Detect "Limpiar" by text or ID
               if (
-                btn.text.trim().toLowerCase() === 'limpiar' ||
+                btn.label.trim().toLowerCase() === 'limpiar' ||
                 btn.buttonId === 5 // ← optional, safer if IDs are unique
               ) {
                 handleClear();
@@ -241,7 +241,7 @@ function DynamicForm({ formId = 2, onSubmit }) {
               }
             }}
           >
-            {btn.text}
+            {btn.label}
           </Button>
         ))}
       </div>
