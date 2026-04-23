@@ -8,7 +8,7 @@ export function groupFieldsById(data) {
     if (!grouped[key]) {
       let options = item.options
 
-      // ✅ Si es campo select y las opciones están en JSON, conviértelo aquí
+      // Si es campo select y las opciones están en JSON, conviértelo aquí
       if (item.type === 'select' && typeof options === 'string') {
         try {
           const parsed = JSON.parse(options)
@@ -42,12 +42,41 @@ export function groupFieldsById(data) {
     
     esdebugg == true ? console.log('Procesando ',item.fieldId) : '' ;
     esdebugg == true ? console.log('Procesando options',item.options) : '' ;
-    grouped[key].validations.push({
-      ruleType: item.ruleType,
-      ruleValue: item.ruleValue,
-      message: item.message
-    })
+
+    if (Array.isArray(item.validations) && item.validations.length > 0) {
+      item.validations.forEach(rule => {
+        grouped[key].validations.push({
+          ruleType: rule.ruleType,
+          ruleValue: rule.ruleValue,
+          message: rule.message
+        })
+      })
+    } else if (item.ruleType) {
+      grouped[key].validations.push({
+        ruleType: item.ruleType,
+        ruleValue: item.ruleValue,
+        message: item.message
+      })
+    }
   })
 
-  return Object.values(grouped).sort((a, b) => a.orderNumber - b.orderNumber)
+  const groupedFields = Object.values(grouped).map(field => {
+    const uniqueValidations = []
+    const seenKeys = new Set()
+
+    field.validations.forEach(rule => {
+      const dedupeKey = `${rule.ruleType ?? ''}|${String(rule.ruleValue ?? '')}|${rule.message ?? ''}`
+      if (!seenKeys.has(dedupeKey)) {
+        seenKeys.add(dedupeKey)
+        uniqueValidations.push(rule)
+      }
+    })
+
+    return {
+      ...field,
+      validations: uniqueValidations
+    }
+  })
+
+  return groupedFields.sort((a, b) => a.orderNumber - b.orderNumber)
 }
