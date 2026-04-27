@@ -13,7 +13,7 @@ import { validateField } from '../../utils/formValidation'
 import { getCleanFormData } from '../../utils/formHelpers'
 
 
-function DynamicForm({ formId = 2, onSubmit }) {
+function DynamicForm({ formId = 2, onSubmit, formError }) {
   const [formFields, setFormFields] = useState([])        // Campos del formulario
   const [formData, setFormData] = useState({})            // Valores actuales del formulario
   const [errors, setErrors] = useState({})                // Errores por campo
@@ -213,8 +213,12 @@ function DynamicForm({ formId = 2, onSubmit }) {
           )}
         </div>
       ))}
-
-
+     
+      {formError && (
+        <div className="text-red-500 text-sm text-center mb-3">
+          {formError}
+        </div>
+      )}
       <div className="flex gap-4">
         {formButtons.map(btn => (
           <Button

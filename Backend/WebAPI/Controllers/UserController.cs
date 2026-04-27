@@ -113,5 +113,25 @@ namespace WebAPI.Controllers
                 });
             }
         }
+
+        [HttpPost("login")]
+        public async Task<IActionResult> Login([FromBody] LoginRequest request)
+        {
+            var result = await _userService.LoginAsync(request.Email, request.Password);
+
+            return result.ResultCode switch
+            {
+                0 => Ok(result),
+                1 => Unauthorized(result),
+                _ => StatusCode(500, result)
+            };
+        }
+
+        //[HttpGet("hash-passwords")]
+        //public async Task<IActionResult> HashPasswords()
+        //{
+        //    await _userService.HashAllPasswords();
+        //    return Ok("Contraseñas hasheadas");
+        //}
     }
 }

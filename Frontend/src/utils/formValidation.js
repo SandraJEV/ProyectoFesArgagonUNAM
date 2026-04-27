@@ -1,6 +1,5 @@
 export function validateField(value, rules = [], formData = {}) {
   const errors = []
-  console.log("rules:", rules)
   for (const rule of rules) {
     const val = rule.ruleValue
 

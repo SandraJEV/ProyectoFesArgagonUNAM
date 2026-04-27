@@ -1,5 +1,5 @@
-import IncidentsFilters from './IncidentsFilters'
-import IncidentsList from './IncidentsList'
+import IncidentsFilters from '../components/Incidents/IncidentsFilters'
+import IncidentsList from '../components/Incidents/IncidentsList'
 
 const IncidentsView = () => {
   return (

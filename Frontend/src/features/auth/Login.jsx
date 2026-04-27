@@ -5,8 +5,35 @@ import { Button } from "../../components/ui/button"
 import DynamicForm from "../../components/ui/FormDinamico"
 import api from '../../services/api'
 import logo  from "../../assets/images/UNAM-FES-Aragon.png" 
+import { useNavigate } from "react-router-dom";
+import { loginRequest } from "../../services/authService";
+
 
 function Login() {
+  const [errorMsg, setErrorMsg] = useState("");
+  const navigate = useNavigate();
+
+  const handleLogin = async (formData) => {
+    console.log("Login data:", formData);
+
+    const result = await loginRequest({
+      email: formData.email,
+      password: formData.password
+    });
+
+    if (result.resultCode === 0) {
+      // guardar sesión
+      localStorage.setItem("token", result.data.token);
+      localStorage.setItem("user", JSON.stringify(result.data.user));
+
+      // redirigir
+      navigate("/dashboard");
+      console.log('Result login',result);
+      
+    } else {
+      setErrorMsg(result.resultMessage);
+    }
+  };
 
   return (
      <>
@@ -25,8 +52,7 @@ function Login() {
             src="https://www.jmautos.cl/wp-content/themes/car-manager/images/not-login-icon.png"
             className="mx-auto my-6 h-14 w-15"
           />
-          <DynamicForm formId={1} onSubmit={(data) => console.log('Formulario listo:', data)} />
-
+          <DynamicForm formId={2} onSubmit={handleLogin} formError={errorMsg} />
          
         </div>
       </div>

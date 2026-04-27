@@ -4,6 +4,11 @@ using System.Data;
 using WebAPI.Models;
 using WebAPI.Data;
 using WebAPI.DTOs;
+// Login
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
 
 namespace WebAPI.Services
 {
@@ -14,13 +19,15 @@ namespace WebAPI.Services
     public class UserService
     {
         private readonly DbConnectionFactory _connectionFactory;
+        private readonly IConfiguration _configuration;
 
         /// <summary>
         /// Constructor que recibe la fábrica de conexión por inyección de dependencias.
         /// </summary>
-        public UserService(DbConnectionFactory connectionFactory)
+        public UserService(DbConnectionFactory connectionFactory, IConfiguration configuration)
         {
             _connectionFactory = connectionFactory;
+            _configuration = configuration;
         }
 
         /// <summary>
@@ -135,12 +142,13 @@ namespace WebAPI.Services
         public async Task<SPResult<int?>> CreateUserAsync(User user)
         {
             using var conn = _connectionFactory.CreateConnection();
+            var hashedPassword = BCrypt.Net.BCrypt.HashPassword(user.PasswordHash);
 
             var parameters = new DynamicParameters();
             parameters.Add("@FirstName", user.FirstName);
             parameters.Add("@LastName", user.LastName);
             parameters.Add("@Email", user.Email);
-            parameters.Add("@PasswordHash", user.PasswordHash);
+            parameters.Add("@PasswordHash", hashedPassword);
             parameters.Add("@RoleID", user.RoleID);
             parameters.Add("@AreaID", user.AreaID);
             parameters.Add("@ReportsTo", user.ReportsTo);
@@ -157,6 +165,106 @@ namespace WebAPI.Services
                 ResultMessage = parameters.Get<string>("@ResultMessage"),
                 Data = parameters.Get<int?>("@UserID")
             };
+        }
+
+        //public async Task HashAllPasswords()
+        //{
+        //    using var conn = _connectionFactory.CreateConnection();
+
+        //    var users = await conn.QueryAsync<User>("SELECT UserID, PasswordHash FROM Users");
+
+        //    foreach (var user in users)
+        //    {
+        //        // solo si no está hasheado (evita doble hash)
+        //        if (!user.PasswordHash.StartsWith("$2"))
+        //        {
+        //            var hashed = BCrypt.Net.BCrypt.HashPassword(user.PasswordHash);
+
+        //            await conn.ExecuteAsync(
+        //                "UPDATE Users SET PasswordHash = @Password WHERE UserID = @UserID",
+        //                new
+        //                {
+        //                    Password = hashed,
+        //                    user.UserID
+        //                });
+        //        }
+        //    }
+        //}
+
+        public async Task<SPResult<object>> LoginAsync(string email, string password)
+        {
+            using var conn = _connectionFactory.CreateConnection();
+
+            //  Buscar usuario
+            var user = await conn.QueryFirstOrDefaultAsync<User>(
+                "GetUserByEmail",
+                new { Email = email },
+                commandType: CommandType.StoredProcedure
+            );
+
+            //  No existe
+            if (user == null)
+            {
+                return new SPResult<object>
+                {
+                    ResultCode = 1,
+                    ResultMessage = "Usuario no encontrado"
+                };
+            }
+
+            // Validar contraseña
+            if (!BCrypt.Net.BCrypt.Verify(password, user.PasswordHash))
+            {
+                return new SPResult<object>
+                {
+                    ResultCode = 1,
+                    ResultMessage = "Contraseña incorrecta"
+                };
+            }
+
+            // Generar token
+            var token = GenerateJwtToken(user);
+
+            return new SPResult<object>
+            {
+                ResultCode = 0,
+                ResultMessage = "Login exitoso",
+                Data = new
+                {
+                    token,
+                    user
+                }
+            };
+        }
+
+        private string GenerateJwtToken(User user)
+        {
+            var jwtSettings = _configuration.GetSection("Jwt");
+
+            var key = new SymmetricSecurityKey(
+                Encoding.UTF8.GetBytes(jwtSettings["Key"])
+            );
+
+            var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
+
+            var claims = new[]
+            {
+                new Claim(ClaimTypes.NameIdentifier, user.UserID.ToString()),
+                new Claim(ClaimTypes.Email, user.Email),
+                new Claim("RoleID", user.RoleID.ToString())
+            };
+
+            var token = new JwtSecurityToken(
+                issuer: jwtSettings["Issuer"],
+                audience: jwtSettings["Audience"],
+                claims: claims,
+                expires: DateTime.Now.AddMinutes(
+                    int.Parse(jwtSettings["ExpiresInMinutes"])
+                ),
+                signingCredentials: creds
+            );
+
+            return new JwtSecurityTokenHandler().WriteToken(token);
         }
     }
 }

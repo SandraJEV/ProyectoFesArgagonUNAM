@@ -1,31 +1,60 @@
-import { useState, useEffect } from 'react'
 import './index.css';
 import Login from "./features/auth/Login";
 import UserForm from "./features/users/UserForm";
 import RequestForm from './features/requests/RequestForm';
 import { Header } from "./layout/Header"
-import { IncidentsView } from './components/Incidents/IncidentsView'
+import IncidentsPage from './pages/IncidentsPage'
+import { Routes, Route, Navigate } from "react-router-dom";
+import { useState, useEffect } from 'react'
 
 
 function App() {
+  const [isAuth, setIsAuth] = useState(!!localStorage.getItem("token"));
 
+  useEffect(() => {
+    // Escuchar cambios en localStorage (simulado con un intervalo)
+    const checkAuth = () => {
+      const token = localStorage.getItem("token");
+      setIsAuth(!!token);
+    };
+
+    window.addEventListener("storage", checkAuth);
+    
+    // También verificar inmediatamente después de cualquier cambio en la ruta
+    const interval = setInterval(checkAuth, 500);
+
+    return () => {
+      window.removeEventListener("storage", checkAuth);
+      clearInterval(interval);
+    };
+  }, []);
 
   return (
     <div className='min-h-screen items-center justify-center bg-background'>
 
-      <Header />
-      {/* <div className="w-[90%] max-w-screen-xl mt-8 mx-auto bg-white rounded-xl shadow-lg px-4 md:px-10 py-10 min-h-[10rem] space-y-6">
-        hOLA REct
-      </div> */}
+      {isAuth && <Header />}
+      <Routes>
 
-        <UserForm></UserForm>
-      {/* <IncidentsView></IncidentsView> */}
-      {/* <RequestForm/> */}
+        {/* LOGIN */}
+        <Route path="/login" element={<Login />} />
+
+        {/* DASHBOARD */}
+        <Route path="/dashboard" element={
+          isAuth ? <IncidentsPage /> : <Navigate to="/login" />
+        } />
+
+        {/* INCIDENCIAS */}
+        <Route path="/incidencias" element={
+          isAuth ? <IncidentsPage /> : <Navigate to="/login" />
+        } />
+
+        {/* DEFAULT */}
+        <Route path="*" element={<Navigate to={isAuth ? "/incidencias" : "/login"} />} />
+
+      </Routes>
+     
 
     </div>
-    // <UserForm />
-    // <Login></Login>
-
   )
 }
 
