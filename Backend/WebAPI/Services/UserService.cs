@@ -6,6 +6,7 @@ using WebAPI.Data;
 using WebAPI.DTOs;
 // Login
 using System.IdentityModel.Tokens.Jwt;
+using System.Text.Json;
 using System.Security.Claims;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
@@ -248,19 +249,19 @@ namespace WebAPI.Services
             var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
 
             var claims = new[]
-            {
+{
                 new Claim(ClaimTypes.NameIdentifier, user.UserID.ToString()),
                 new Claim(ClaimTypes.Email, user.Email),
-                new Claim("RoleID", user.RoleID.ToString())
+                new Claim(ClaimTypes.Role, user.RoleID.ToString()) 
             };
-
+            var expiresInMinutes = int.TryParse(jwtSettings["ExpiresInMinutes"], out var val)
+            ? val
+            : 60;
             var token = new JwtSecurityToken(
                 issuer: jwtSettings["Issuer"],
                 audience: jwtSettings["Audience"],
                 claims: claims,
-                expires: DateTime.Now.AddMinutes(
-                    int.Parse(jwtSettings["ExpiresInMinutes"])
-                ),
+                expires: DateTime.Now.AddMinutes(expiresInMinutes),
                 signingCredentials: creds
             );
 

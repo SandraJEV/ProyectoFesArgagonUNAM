@@ -39,16 +39,16 @@ namespace WebAPI.Controllers
                 if (conn.State == ConnectionState.Open)
                 {
                     // Retorna un 200 OK con mensaje de éxito si la conexión fue exitosa
-                    return Ok("✅ Conexión a la base de datos exitosa.");
+                    return Ok("Conexión a la base de datos exitosa.");
                 }
 
                 // Si no se pudo abrir la conexión, retorna error 500
-                return StatusCode(500, "❌ No se pudo abrir la conexión.");
+                return StatusCode(500, "No se pudo abrir la conexión.");
             }
             catch (Exception ex)
             {
                 // Si ocurre cualquier excepción, se retorna un error 500 con el mensaje de la excepción
-                return StatusCode(500, $"❌ Error al conectar: {ex.Message}");
+                return StatusCode(500, $" Error al conectar: {ex.Message}");
             }
         }
     }
