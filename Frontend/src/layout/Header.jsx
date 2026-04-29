@@ -5,7 +5,7 @@ export function Header() {
   const [open, setOpen] = useState(false);
   const user = JSON.parse(localStorage.getItem("user"));
   return (
-    <header className="w-full bg-white py-4 shadow-md">
+    <header className="w-full bg-white py-4 shadow-md  mb-6">
       <div className="container mx-auto flex items-center justify-between px-6">
         {/* Logo */}
         <a href="/" className="flex items-center">

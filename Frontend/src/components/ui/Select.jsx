@@ -7,11 +7,11 @@ import "./../../styles/tooltip.css";
 
 export function Select({ options = [], selected, onChange }) {
   const [selectedOption, setSelectedOption] = useState(
-    selected ?? { id: null, name: 'Seleccionar' }
+    selected ?? { id: null, Name: 'Seleccionar' }
   );
 
   useEffect(() => {
-    setSelectedOption(selected ?? { id: null, name: 'Seleccionar' });
+    setSelectedOption(selected ?? { id: null, Name: 'Seleccionar' });
   }, [selected]);
 
   return (
@@ -32,9 +32,9 @@ export function Select({ options = [], selected, onChange }) {
             )}
             <span
               className={`block truncate ${selectedOption?.imagen ? 'ml-1' : ''}`}
-              title={selectedOption?.name}  // tooltip nativo opcional
+              title={selectedOption?.Name}  // tooltip nativo opcional
             >
-              {selectedOption?.name || 'Seleccionar'}
+              {selectedOption?.Name || 'Seleccionar'}
             </span>
           </span>
           <ChevronUpDownIcon
@@ -45,7 +45,7 @@ export function Select({ options = [], selected, onChange }) {
 
         <ListboxOptions
           transition
-          className="absolute left-0 z-10 mt-1 max-h-56 w-max min-w-[14rem] max-w-[32rem] 
+          className="absolute left-0 z-50 mt-1 max-h-56 w-max min-w-[14rem] max-w-[32rem] 
                      overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black/5 
                      focus:outline-none data-[closed]:data-[leave]:opacity-0 data-[leave]:transition 
                      data-[leave]:duration-100 data-[leave]:ease-in sm:text-sm"
@@ -64,9 +64,9 @@ export function Select({ options = [], selected, onChange }) {
                 )}
                 <span
                   className="ml-3 block font-normal whitespace-nowrap group-data-[selected]:font-semibold"
-                  title={option.name}  // tooltip nativo opcional
+                  title={option.Name}  // tooltip nativo opcional
                 >
-                  {option.name}
+                  {option.Name}
                 </span>
               </div>
 
