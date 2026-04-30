@@ -129,7 +129,7 @@ export function AvatarToast({
   time
 }: AvatarToastProps) {
   return (
-    <div className="bg-background-100 relative flex min-w-89.5 items-start gap-4 rounded-lg border border-base-200 p-5 shadow-sm">
+    <div className="bg-background-100 relative flex min-w-89.5 items-start gap-4 rounded-lg border border-base-200 p-5 shadow-sm ">
       <Avatar
         src={image}
         alt={"Image of " + name}

@@ -5,7 +5,6 @@ import {
   ChevronDownIcon,
 } from "@heroicons/react/24/outline";
 
-import { Toast } from "@/components/tailgrids/core/toast";
 
 import { Avatar, IconButton, Typography } from "@material-tailwind/react";
 import { useRef } from "react";
@@ -16,6 +15,7 @@ import DynamicForm from "./../ui/FormDinamico";
 import { useState, useEffect } from "react";
 import { Badge } from "../ui/Badge";
 import { badgeColorMap } from "../../config/badgeColors";
+import AppToast from "../ui/toast";
 import api from "./../../services/api";
 
 const TABLE_HEAD = [
@@ -56,14 +56,12 @@ export function IncidentsList({ data = [], isLoading = false }) {
         const items = Array.isArray(res.data)
           ? res.data
           : (res.data?.data ?? []);
-        console.log(items);
-
+      
         const mapped = items.map((u) => ({
           id: u.UserID ?? u.userID ?? u.id ?? u.Id,
           name: `${u.firstName} ${u.lastName}`,
         }));
         setUserOptions(mapped);
-        console.log("map ", mapped);
       })
       .catch((err) => setUsersError(err?.message || "Error al cargar usuarios"))
       .finally(() => alive && setLoadingUsers(false));
@@ -108,8 +106,15 @@ export function IncidentsList({ data = [], isLoading = false }) {
     return 0;
   });
   const saveIncident = async (data, closeModal) => {
+    console.log("Guardando incidencia con datos:", data);
     try {
       const user = JSON.parse(localStorage.getItem("user"));
+
+      const formatDate = (dateStr) => {
+        if (!dateStr) return null;
+        const [day, month, year] = dateStr.split("/");
+        return `${year}-${month}-${day}`;
+      };
 
       const response = await api.post("/GenericSP/execute", {
         procedureName: "SP_GeneralIncidents",
@@ -119,7 +124,7 @@ export function IncidentsList({ data = [], isLoading = false }) {
           Description: data.Description,
           EquipmentTypeID: data.EquipmentTypeID,
           SalonID: data.SalonID,
-          Deadline: data.Deadline || null,
+          Deadline: formatDate(data.Deadline) || null,
           CreatedBy: user.userID,
         },
       });
@@ -261,7 +266,7 @@ export function IncidentsList({ data = [], isLoading = false }) {
       {!isLoading && sortedRows.length > 0 && (
         <div className="flex items-center justify-between pt-4">
           <Typography variant="small" color="blue-gray" className="font-normal">
-            Página 1 de 5
+            Página 1 de 1
           </Typography>
           <div className="flex gap-2">
             <Button variant="outlined" size="sm">
@@ -274,9 +279,12 @@ export function IncidentsList({ data = [], isLoading = false }) {
         </div>
       )}
       {toast && (
-        <div className="fixed top-5 right-5 z-50">
-          <div className={`alert alert-${toast.variant}`}>{toast.message}</div>
-        </div>
+        <AppToast
+          variant={toast.variant}
+          message={toast.message}
+          duration={5000}
+          onClose={() => setToast(null)}
+        />
       )}
     </div>
   );

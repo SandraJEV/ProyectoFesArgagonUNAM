@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import api from "../../services/api";
 import { IncidentsList } from "./IncidentsList";
 
+
 export function IncidentsView() {
   const [results, setResults] = useState([]);
   const [isLoading, setIsLoading] = useState(false);

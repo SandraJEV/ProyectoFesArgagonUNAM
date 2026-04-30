@@ -9,6 +9,9 @@
         public string Type { get; set; } = string.Empty;
         public string Placeholder { get; set; } = string.Empty;
         public string CssClass { get; set; } = string.Empty;
+        public string LinkText { get; set; } = string.Empty;
+        public string LinkHref { get; set; } = string.Empty;
+        public string LinkTarget { get; set; } = string.Empty;
         public bool IsRequired { get; set; }
         public decimal OrderNumber { get; set; }
         public int? RuleId { get; set; }

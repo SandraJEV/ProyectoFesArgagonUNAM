@@ -8,7 +8,6 @@ import logo  from "../../assets/images/UNAM-FES-Aragon.png"
 import { useNavigate } from "react-router-dom";
 import { loginRequest } from "../../services/authService";
 
-
 function Login() {
   const [errorMsg, setErrorMsg] = useState("");
   const navigate = useNavigate();

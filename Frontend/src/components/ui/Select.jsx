@@ -7,11 +7,11 @@ import "./../../styles/tooltip.css";
 
 export function Select({ options = [], selected, onChange }) {
   const [selectedOption, setSelectedOption] = useState(
-    selected ?? { id: null, Name: 'Seleccionar' }
+    selected ?? { id: null, name: 'Seleccionar' }
   );
 
   useEffect(() => {
-    setSelectedOption(selected ?? { id: null, Name: 'Seleccionar' });
+    setSelectedOption(selected ?? { id: null, name: 'Seleccionar' });
   }, [selected]);
 
   return (
@@ -32,9 +32,9 @@ export function Select({ options = [], selected, onChange }) {
             )}
             <span
               className={`block truncate ${selectedOption?.imagen ? 'ml-1' : ''}`}
-              title={selectedOption?.Name}  // tooltip nativo opcional
+              title={selectedOption?.name}  // tooltip nativo opcional
             >
-              {selectedOption?.Name || 'Seleccionar'}
+              {selectedOption?.name || 'Seleccionar'}
             </span>
           </span>
           <ChevronUpDownIcon
@@ -64,9 +64,9 @@ export function Select({ options = [], selected, onChange }) {
                 )}
                 <span
                   className="ml-3 block font-normal whitespace-nowrap group-data-[selected]:font-semibold"
-                  title={option.Name}  // tooltip nativo opcional
+                  title={option.name}  // tooltip nativo opcional
                 >
-                  {option.Name}
+                  {option.name}
                 </span>
               </div>
 

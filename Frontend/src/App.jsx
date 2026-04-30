@@ -43,6 +43,9 @@ function App() {
           isAuth ? <IncidentsPage /> : <Navigate to="/login" />
         } />
 
+        <Route path="/UserForm" element={<UserForm />} />
+
+
         {/* INCIDENCIAS */}
         <Route path="/incidencias" element={
           isAuth ? <IncidentsPage /> : <Navigate to="/login" />

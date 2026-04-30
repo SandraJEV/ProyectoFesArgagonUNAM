@@ -56,6 +56,9 @@ namespace WebAPI.Services
                     placeholder = first.Placeholder,
                     isRequired = first.IsRequired,
                     orderNumber = first.OrderNumber,
+                    LinkTarget = first.LinkTarget,
+                    LinkHref = first.LinkHref,
+                    LinkText = first.LinkText,
                     options = options,
 
                     validations = g
